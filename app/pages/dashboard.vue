@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import DcChart from '~/components/DcChart.vue'
+import DcChart from '~/components/dashboard/DcChart.vue'
 
 const router = useRouter()
 

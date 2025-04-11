@@ -449,3 +449,16 @@ export const WORLD_CODE = {
   'Zambia': 'ZM',
   'Zimbabwe': 'ZW',
 };
+
+export const CND_LV_A = '無症,退院';
+export const CND_LV_B = '感染';
+export const CND_LV_C = '肺炎,入院';
+export const CND_LV_D = '酸投,重症';
+export const CND_LV_E = '死亡';
+
+export const COL_CND = ["#2ca02c", "#1f77b4", "#ff7f0e", "#d62728", '#9467bd'];
+export const COL_CND_A = COL_CND[0];
+export const COL_CND_B = COL_CND[1];
+export const COL_CND_C = COL_CND[2];
+export const COL_CND_D = COL_CND[3];
+export const COL_CND_E = COL_CND[4];
