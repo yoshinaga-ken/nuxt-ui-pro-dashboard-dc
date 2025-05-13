@@ -10,6 +10,8 @@ const data = 'covid19-data-2021-02-28.csv'
 const selectableData = {
   'covid19-japan.jpg': 'covid19-data-2021-02-28.csv',
   'food-ramen.jpg': 'food-ramen.csv',
+  'ja-weather-precipitation.jpg': 'ja-weather-precipitation.csv',
+  'ja-weather-temperature.jpg': 'ja-weather-temperature.csv',
   'ja-quake-noto-safety.jpg': 'ja-quake-noto-safety.csv',
   'ja-tokyo-gubernatorial-election.jpg': 'ja-tokyo-gubernatorial-election.csv',
   'resas-agriculture.jpg': 'resas-agriculture.csv',

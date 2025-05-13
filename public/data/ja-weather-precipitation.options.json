@@ -1,0 +1,148 @@
+{
+  "dataType": 0,
+  "common": {
+    "unit": "mm"
+  },
+  "chartName": {},
+  "chartCity": {
+    "imagePath": "@tube",
+    "imageTooltip": "all",
+    "orderYmd": false,
+    "orderUI": false
+  },
+  "chartDate": {
+    "elasticY": false,
+    "width": 1000,
+    "format": "YYYY"
+  },
+  "chartYear": {
+    "isLegend": true
+  },
+  "chartSeason": {},
+  "chartWeek": {},
+  "chartSex": {
+    "name": "平均気温(℃)",
+    "chartType": "bar",
+    "scale": 5,
+    "unit": null
+  },
+  "chartAge": {
+    "name": "平均風速(m/s)",
+    "isStacked": 1,
+    "scale": 0.5,
+    "unit": null
+  },
+  "chartCond": {
+    "name": "最多風向(16方位)",
+    "isStacked": 1
+  },
+  "chartJob": {
+    "name": "降雪量合計(cm)"
+  },
+  "chartJobCat": {},
+  "chartEx": [
+    {
+      "name": "平均湿度(％)",
+      "scale": 10,
+      "isLegend": 1
+    },
+    {
+      "name": "平均雲量(10分比)",
+      "scale": 0.5,
+      "isLegend": 1
+    },
+    {
+      "name": "平均蒸気圧(hPa)",
+      "scale": 10,
+      "isLegend": 0
+    },
+    {
+      "name": "平均現地気圧(hPa)",
+      "scale": 10,
+      "isLegend": 0
+    },
+    {
+      "name": "日照時間(時間)",
+      "scale": 50,
+      "isLegend": 0
+    },
+    {
+      "name": "雪日数(日)",
+      "scale": 5,
+      "isLegend": 0
+    },
+    {
+      "name": "雷日数(日)",
+      "scale": 5,
+      "isLegend": 0
+    },
+    {
+      "name": "霧日数(日)",
+      "scale": 5,
+      "isLegend": 0
+    }
+  ],
+  "chartGMap": {},
+  "chartMap": {
+    "isShow": true,
+    "colors": [
+      [
+        "500m以上",
+        "#8c0a00",
+        499999
+      ],
+      [
+        "100m以上",
+        "#ea5432",
+        99999
+      ],
+      [
+        "50m以上",
+        "#ff781d",
+        49999
+      ],
+      [
+        "10m以上",
+        "#ff9d57",
+        9999
+      ],
+      [
+        "5m以上",
+        "#ffceab",
+        4999
+      ],
+      [
+        "1m以上",
+        "#f5deb3",
+        999
+      ],
+      [
+        "0mm",
+        "#dadada",
+        0
+      ],
+      [
+        "選択中",
+        "#ffffff",
+        0
+      ]
+    ]
+  },
+  "chartSView": {},
+  "chartTube": {},
+  "chartDetail": {},
+  "assets": {
+    "jobcates": [
+      "0"
+    ]
+  },
+  "title": "日本の主要都市の「☔降水量(mm)」の変化",
+  "searchPrefix": "WeatherData",
+  "dataReference": "<ul><li><a target='_blank' href='https://www.data.jma.go.jp/risk/obsdl/'>過去の気象データ・ダウンロード@気象庁</a></li></ul>",
+  "editURL": "",
+  "detailType": "city",
+  "isMakeAutocompleteData": false,
+  "chartDate2": {
+    "chartType": "lines"
+  }
+}
