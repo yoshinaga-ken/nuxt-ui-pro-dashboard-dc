@@ -410,8 +410,8 @@
 
               <span class="ui-icon ui-icon-circle-close sp_icon btn_close" @click="pnl.date.is_show=0"></span>
 
-              <div class="div_total">{{ pnl.common.unit }} 累計&nbsp;
-                <span class="div_total_cnt" v-text="pnl.date.cnt"></span>
+              <div class="div_total">{{ pnl.common.unitPrefix }} 累計&nbsp;
+                <span class="div_total_cnt" v-text="pnl.date.cnt"></span> {{ pnl.common.unit }}
               </div>
               <div class="clearfix"></div>
               <div class="div_cnt">
@@ -427,7 +427,7 @@
               <span class="chart-title text-theme-col2" v-html="pnl.date.chart2.title"></span>
               <span class="chart-title2 text-theme-col2 " v-html="pnl.date.chart2.title2"></span>
               <div v-if="pnl.date.chart2.type === 0" class="div_total">累計&nbsp;<span
-                class="div_total_cnt" v-text="pnl.date.chart2.cnt"></span>&nbsp;名&nbsp;&nbsp;
+                class="div_total_cnt" v-text="pnl.date.chart2.cnt"></span>&nbsp;{{ pnl.common.unit }}
               </div>
               <div id="div_date2" style="overflow-x: auto;width: 100%;">
                 <div id="chart_date2"></div>
@@ -1133,6 +1133,8 @@ const props = defineProps({
     default: () => ({
       'covid19-japan.jpg': 'covid19-data-2021-02-28.csv',
       'food-ramen.jpg': 'food-ramen.csv',
+      'ja-weather-precipitation.jpg': 'ja-weather-precipitation.csv',
+      'ja-weather-temperature.jpg': 'ja-weather-temperature.csv',
       'ja-quake-noto-safety.jpg': 'ja-quake-noto-safety.csv',
       'ja-tokyo-gubernatorial-election.jpg': 'ja-tokyo-gubernatorial-election.csv',
       'resas-agriculture.jpg': 'resas-agriculture.csv',
@@ -1178,7 +1180,8 @@ const isSp = window.innerWidth <= 768;
 const dataImgSrc = ref('');
 const pnl = reactive({
   common: {
-    unit: '', // '売上本数(万本)' : 'タイトル';
+    unitPrefix: '', // '売上本数(万本)' : 'タイトル';
+    unit: '',
     dataReference: '',
     datepicker: {
       position: {}
@@ -1705,7 +1708,7 @@ watch(() => pnl.name.is_show, onChangeSettings);
 watch(() => pnl.city.is_show, onChangeSettings);
 watch(() => pnl.city.orderCnt, v => {
   if (mm.url_data.data.indexOf('game-') === 0) {
-    pnl.common.unit = pnl.city.orderUI ? (v ? '売上本数(万本)' : 'タイトル') : ''
+    pnl.common.unitPrefix = pnl.city.orderUI ? (pnl.city.orderCnt ? '売上本数(万本)' : 'タイトル') : '';
   }
 
   // Sum/Countタイプの切り替え。(例: 売り上げ本数合計/タイトル数)
@@ -2083,6 +2086,9 @@ const mm = {
   // data=xxx データに含まれるオプション
   opt: {
     dataType: DT_DEF, // DT_DEF|DT_COVID,
+    common: {
+      unit: ''
+    },
     chartGMap: {},
     chartSView: {},
     chartTube: {},
@@ -2270,6 +2276,12 @@ const mm = {
   },
   // データオプション(mm.opt)系をpnlに反映
   setPanelFromDataOptions: () => {
+    if (mm.opt.dataType === DT_COVID) {
+      pnl.common.unit = '名';
+    }
+    if (mm.opt.common.unit) {
+      pnl.common.unit = mm.opt.common.unit;
+    }
     if (mm.opt.dataReference) {
       pnl.common.dataReference = mm.opt.dataReference;
     }
@@ -2341,7 +2353,7 @@ const mm = {
       if (mm.opt.chartCity.orderUI) {
         pnl.city.orderUI = mm.opt.chartCity.orderUI;
         if (mm.url_data.data.indexOf('game-') === 0) {
-          pnl.common.unit = pnl.city.orderUI ? (pnl.city.orderCnt ? '売上本数(万本)' : 'タイトル') : '';
+          pnl.common.unitPrefix = pnl.city.orderUI ? (pnl.city.orderCnt ? '売上本数(万本)' : 'タイトル') : '';
         }
       }
     } else {
@@ -2774,7 +2786,7 @@ const mm = {
         }
       }
     },
-    stackedTitle: (d, keyFormat = null) => {
+    stackedTitle: (d, keyFormat = null, unit = '名') => {
       let is_bar = isNaN(d.value);
       let s_suf = '';
       if (gg.dt === DT_COVID) {
@@ -2877,7 +2889,7 @@ const mm = {
 
       if (!is_bar) {
         //N日 移動平均
-        return keyStr + '\n週間移動平均: ' + php_number_format(d.value) + '名';
+        return keyStr + '\n週間移動平均: ' + php_number_format(d.value) + unit;
       }
 
       let flt = mm.chartName.filters();
@@ -2885,37 +2897,45 @@ const mm = {
       if (pref_mode) {
         let s = '';
         for (let f of flt) {
-          s += d.value.nmcnt[f] ? (f + ': ' + d.value.nmcnt[f] + '名\n') : '';
+          if (d.value.nmcnt[f]) {
+            const itemValue = d.value.nmcnt[f];
+            const itemPercent = _.round(100 * itemValue / d.value.total, 1);
+            s += f + ': ' + itemValue + unit +
+              (itemPercent !== 100 ? (' (' + itemPercent + '%)') : '') + '\n';
         }
-        return keyStr + '\n────────\n' + s + (flt.length > 1 ? '────────\n計: ' + d.value.total + '名' : '') + '\n' + s_suf;
+        }
+        return keyStr + '\n────────\n' + s + (flt.length > 1 ? '────────\n計: ' + d.value.total + unit : '') + '\n' + s_suf;
       } else if (pnl.date.stack_type === STACK_AGE) {
         let s = '';
+        let per = 0;
         for (var i = 0; i < d.value.agcnt.length; i++) {
           if (d.value.agcnt[i] === 0) continue
-          let per = _.round(100 * d.value.agcnt[i] / d.value.total, 1) + '%';
+          per = _.round(100 * d.value.agcnt[i] / d.value.total, 1);
           let nm = mm.chartStack[STACK_AGE][i];
-          s += php_sprintf("%' -8s", nm) + ': ' + php_sprintf("%' 3s", php_number_format(d.value.agcnt[i])) + ' (' + per + ')\n';
+          s += php_sprintf("%' -8s", nm) + ': ' + php_sprintf("%' 3s", php_number_format(d.value.agcnt[i])) + unit +
+            (per !== 100 ? (' (' + per + '%)') : '') + '\n';
         }
-        return keyStr + '\n──────────\n' + s + '──────────\n計: ' + php_number_format(d.value.total) + '\n' + s_suf;
-      } else { // tack_type==='con'
+        return keyStr + '\n──────────\n' + s + (per === 100 ? '' : ('──────────\n計: ' + php_number_format(d.value.total) + unit)) + '\n' + s_suf;
+      } else { // stack_type==='con'
         if (gg.dt === DT_COVID) {
           return keyStr + '\n────────\n' +
-            (d.value.lv_a === 0 ? '' : CND_LV_A + ': ' + d.value.lv_a + '名\n') +
-            (d.value.lv_b === 0 ? '' : CND_LV_B + ': ' + d.value.lv_b + '名\n') +
-            (d.value.lv_c === 0 ? '' : CND_LV_C + ': ' + d.value.lv_c + '名\n') +
-            (d.value.lv_d === 0 ? '' : CND_LV_D + ': ' + d.value.lv_d + '名\n') +
-            (d.value.lv_e === 0 ? '' : CND_LV_E + ': ' + d.value.lv_e + '名\n') +
-            '────────\n計: ' + php_number_format(d.value.total) + '名' + '\n' + s_suf;
+            (d.value.lv_a === 0 ? '' : CND_LV_A + ': ' + d.value.lv_a + unit + '\n') +
+            (d.value.lv_b === 0 ? '' : CND_LV_B + ': ' + d.value.lv_b + unit + '\n') +
+            (d.value.lv_c === 0 ? '' : CND_LV_C + ': ' + d.value.lv_c + unit + '\n') +
+            (d.value.lv_d === 0 ? '' : CND_LV_D + ': ' + d.value.lv_d + unit + '\n') +
+            (d.value.lv_e === 0 ? '' : CND_LV_E + ': ' + d.value.lv_e + unit + '\n') +
+            '────────\n計: ' + php_number_format(d.value.total) + unit + '\n' + s_suf;
         } else {
           let s = '';
+          let per = 0;
           for (var i = 0; i < d.value.cdcnt.length; i++) {
             if (d.value.cdcnt[i] === 0) continue
-            let per = _.round(100 * d.value.cdcnt[i] / d.value.total, 1) + '%';
+            per = _.round(100 * d.value.cdcnt[i] / d.value.total, 1);
             let nm = mm.chartStack[STACK_CND][i];
-            s += php_sprintf("%' -8s", nm) + ': ' + php_sprintf("%' 3s", php_number_format(d.value.cdcnt[i])) + ' (' + per + ')\n';
+            s += php_sprintf("%' -8s", nm) + ': ' + php_sprintf("%' 3s", php_number_format(d.value.cdcnt[i])) + unit +
+              (per !== 100 ? (' (' + per + '%)') : '') + '\n';
           }
-          return keyStr + '\n──────────\n' + s + '──────────\n計: ' + php_number_format(d.value.total) + '\n' + s_suf;
-
+          return keyStr + '\n──────────\n' + s + (per === 100 ? '' : ('──────────\n計: ' + php_number_format(d.value.total) + unit)) + '\n' + s_suf;
         }
       }
     },
@@ -5069,10 +5089,8 @@ const mm = {
     // CSVファイルのオプションが外部JSONファイルである場合それを読み込む
     return mm.util.loadJSON(pathOptionsJson)
       .then((d) => {
-        mm.opt = d;
-        if (mm.opt.assets === undefined) {
-          mm.opt.assets = {};
-        }
+        mm.opt = _.merge({}, mm.opt || {}, d);
+
         gg.dt = parseInt(mm.opt.dataType);
         gg.isPrefTable = gg.dt === DT_COVID;
         doParseOptions = 0;
@@ -5257,7 +5275,7 @@ const createStackedBarChart = (dimension, parent, height, barWidth, onFiltered, 
     .label(function (d) {
       return mm.d3fmt(d.data.value.total);
     })
-    .title(v => mm.util.stackedTitle(v, keyFormat));
+    .title(v => mm.util.stackedTitle(v, keyFormat, mm.opt.common.unit));
 
   // chart.xAxis().ticks(4);
   chart.yAxis().tickFormat(d3.format(".2s")).ticks(4);
@@ -5706,9 +5724,7 @@ const initChartDate = (chartDateW) => {
     .renderVerticalGridLines(gg.dt !== DT_COVID)
     .brushOn(false)
     .elasticY(mm.config.cDate.is_elasticY) //yAxisの高さを動的に変化させる
-    .title(v => mm.util.stackedTitle(v, valueFormat))
-    .on('renderlet', function (chart, filter) {
-    })
+    .title(v => mm.util.stackedTitle(v, valueFormat, mm.opt.common.unit))
     .on('pretransition', mm.onChartDatePretransition)
     .addFilterHandler(mm.addFilterHandler)
     .on('preRedraw', function (chart) {
