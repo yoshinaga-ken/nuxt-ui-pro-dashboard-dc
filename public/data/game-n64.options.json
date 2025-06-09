@@ -1,6 +1,11 @@
 {
   "dataType": 0,
   "title": "「NINTENDO64」ソフト一覧",
+  "common": {
+    "unit": "タイトル"
+  },
+  "searchPrefixDataIndex": 5,
+  "searchPrefix": "ニンテンドー64",
   "dataReference": "<ul><li><a target='_blank' href='http://pasofami.game.coocan.jp/game/game.htm'>各種ゲーム機 カセット・ソフトタイトルリスト@pasofami</a></li><li><a target='_blank' href='https://www.gavas.jp/user_data/nintendo64_game_ranking.php'>ニンテンドウ64歴代ソフト売上ランキング＠ピコピコ大百科</a></li><li>wikipedia</ul>",
   "detailType": "city",
   "isMakeAutocompleteData": true,
@@ -12,7 +17,9 @@
     "imagePath": "/img/game/n64",
     "imageTooltip": "all",
     "orderYmd": true,
-    "orderUI": true
+    "orderUI": true,
+    "orderUIUnitPrefix": "売上本数",
+    "orderUIUnit": "万本"
   },
   "chartDate": {
     "elasticY": false,
@@ -64,12 +71,41 @@
   "chartJobCat": {},
   "chartEx": [
     {
-      "scale": false,
-      "isLegend": false
+      "name": "👥クリエイターズ👨‍💼👨‍💻🎨",
+      "isDcSunburstChart": true,
+      "dcSunburstChart": {
+        "keyIndex": "👨‍💼$10/👨‍💻$11/🎨$12",
+        "width": 600,
+        "height": 600
+      },
+      "orderDesc": true,
+      "legend": {
+        "isShow": false
+      }
     },
     {
-      "scale": false,
-      "isLegend": false
+      "name": "👨‍💼ディレクター",
+      "orderDesc": true
+    },
+    {
+      "name": "👨‍💻プログラマー",
+      "orderDesc": true
+    },
+    {
+      "name": "🎨デザイナー/美術",
+      "orderDesc": true
+    },
+    {
+      "name": "🎵音楽",
+      "orderDesc": true
+    },
+    {
+      "name": "📝シナリオ",
+      "orderDesc": true
+    },
+    {
+      "name": "💼プロデューサー",
+      "orderDesc": true
     }
   ],
   "chartDetail": {}

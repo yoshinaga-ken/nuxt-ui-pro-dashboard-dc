@@ -1,6 +1,10 @@
 {
   "dataType": 0,
   "title": "「セガ サターン」ソフト一覧",
+  "common": {
+    "unit": "タイトル"
+  },
+  "searchPrefixDataIndex": 5,
   "searchPrefix": "セガサターン",
   "dataReference": "<ul><li><a target='_blank' href='https://www.gavas.jp/user_data/segasaturn_game_title.php'>セガサターンのゲームタイトル一覧@ピコピコ大百科</a></li><li><a target='_blank' href='https://www.gavas.jp/user_data/segasaturn_game_ranking.php'>セガサターンソフト売上ランキングTOP50@ピコピコ大百科</a></li><li><a target='_blank' href='https://ja.wikipedia.org/wiki/セガサターンのゲームタイトル一覧'>セガサターンのゲームタイトル一覧@wikipedia</a></li></ul>",
   "detailType": "city",
@@ -13,7 +17,9 @@
     "imagePath": "/img/game/ss",
     "imageTooltip": "all",
     "orderYmd": true,
-    "orderUI": true
+    "orderUI": true,
+    "orderUIUnitPrefix": "売上本数",
+    "orderUIUnit": "万本"
   },
   "chartDate": {
     "elasticY": false,
@@ -45,12 +51,41 @@
   "chartJob": {},
   "chartEx": [
     {
-      "scale": false,
-      "isLegend": false
+      "name": "👥クリエイターズ👨‍💼👨‍💻🎨",
+      "isDcSunburstChart": true,
+      "dcSunburstChart": {
+        "keyIndex": "👨‍💼$10/👨‍💻$11/🎨$12",
+        "width": 600,
+        "height": 600
+      },
+      "orderDesc": true,
+      "legend": {
+        "isShow": false
+      }
     },
     {
-      "scale": false,
-      "isLegend": false
+      "name": "👨‍💼ディレクター",
+      "orderDesc": true
+    },
+    {
+      "name": "👨‍💻プログラマー",
+      "orderDesc": true
+    },
+    {
+      "name": "🎨デザイナー/美術",
+      "orderDesc": true
+    },
+    {
+      "name": "🎵音楽",
+      "orderDesc": true
+    },
+    {
+      "name": "📝シナリオ",
+      "orderDesc": true
+    },
+    {
+      "name": "💼プロデューサー",
+      "orderDesc": true
     }
   ],
   "chartDetail": {}

@@ -1,9 +1,10 @@
 {
   "dataType": 0,
-  "chartDate2": {
-    "chartType": "lines"
-  },
   "title": "コンビニ 清涼飲料水 販売数",
+  "common": {
+    "unit": "本",
+    "unitPrefix": "販売数"
+  },
   "isMakeAutocompleteData": true,
   "chartAge_unit": "null",
   "chartGMap": {},
@@ -14,9 +15,22 @@
   },
   "chartName": {},
   "chartCity": {},
-  "chartDate": {},
+  "chartDate": {
+    "isRangeChart": true,
+    "isFilterMissingCorrect": false
+  },
+  "chartDate2": {
+    "isShow": true,
+    "chartType": "lines",
+    "renderArea": true,
+    "renderDataPoints": true,
+    "isFilterMissingCorrect": true
+  },
   "chartYear": {
-    "isLegend": true
+    "isLegend": true,
+    "margins": {
+      "left": 100
+    }
   },
   "chartSeason": {},
   "chartWeek": {},
@@ -25,7 +39,13 @@
       "不明",
       "♂男",
       "♀女"
-    ]
+    ],
+    "chartType": "pie",
+    "isLegend": true,
+    "margins": {
+      "top": 20,
+      "left": 100
+    }
   },
   "chartAge": {
     "scale": 10,
@@ -34,6 +54,29 @@
   "chartCond": {},
   "chartJob": {},
   "chartJobCat": {},
-  "chartEx": [],
+  "chartEx": [
+    {
+      "isDcSunburstChart": true,
+      "dcSunburstChart": {
+        "width": 600,
+        "height": 600,
+        "margins": {
+          "left": 100
+        },
+        "legend": {
+          "x": 2,
+          "y": 2
+        }
+      },
+      "isLegend": true
+    },
+    {
+      "isDcSunburstChart": false,
+      "isLegend": true,
+      "margins": {
+        "left": 100
+      }
+    }
+  ],
   "chartDetail": {}
 }

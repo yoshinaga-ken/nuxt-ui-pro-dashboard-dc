@@ -1,6 +1,7 @@
 {
   "dataType": 0,
   "title": "「MSX」ソフト一覧",
+  "searchPrefixDataIndex": 5,
   "searchPrefix": "MSX",
   "dataReference": "<ul><li><a target='_blank' href='http://pasofami.game.coocan.jp/game/game.htm'>各種ゲーム機 カセット・ソフトタイトルリスト@pasofami</a><li><a target='_blank' href='https://ja.wikipedia.org/wiki/MSXのゲームタイトル一覧'>MSXのゲームタイトル一覧@wikipedia</a></ul>",
   "detailType": "city",
@@ -45,8 +46,41 @@
       "isLegend": false
     },
     {
-      "scale": false,
-      "isLegend": false
+      "name": "👥クリエイターズ👨‍💼👨‍💻🎨",
+      "isDcSunburstChart": true,
+      "dcSunburstChart": {
+        "keyIndex": "👨‍💼$11/👨‍💻$12/🎨$13",
+        "width": 600,
+        "height": 600
+      },
+      "orderDesc": true,
+      "legend": {
+        "isShow": false
+      }
+    },
+    {
+      "name": "👨‍💼ディレクター",
+      "orderDesc": true
+    },
+    {
+      "name": "👨‍💻プログラマー",
+      "orderDesc": true
+    },
+    {
+      "name": "🎨デザイナー/美術",
+      "orderDesc": true
+    },
+    {
+      "name": "🎵音楽",
+      "orderDesc": true
+    },
+    {
+      "name": "📝シナリオ",
+      "orderDesc": true
+    },
+    {
+      "name": "💼プロデューサー",
+      "orderDesc": true
     }
   ],
   "chartDetail": {}

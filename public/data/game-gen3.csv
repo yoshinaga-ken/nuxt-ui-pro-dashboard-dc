@@ -9648,16 +9648,3 @@
 1989-04-21,0,0,🚧,GB,役満,TBL,0,0
 1989-04-21,0,0,🚧,GB,遊戯王デュエルモンスターズ,TBL,0,0
 1989-04-21,0,0,🚧,GB,遊戯王モンスターカプセルGB,RPG,0,0
-@CsvOptions:,,,,,,,,
-dataType=0,,,,,,,,
-title=第3～5世代ゲーム機ソフト一覧,,,,,,,,
-searchPrefixDataIndex=4,,,,,,,,
-isMakeAutocompleteData=0,,,,,,,,
-chartName[imagePath]=/img/game/hard,,,,,,,,
-chartCity[orderYmd]=0,,,,,,,,
-chartCity[imagePath]=/img/game/smc,,,,,,,,
-chartCity[imageTooltip]=all,,,,,,,,
-chartDate[width]=1000,,,,,,,,
-chartDate[format]=YYYY,,,,,,,,
-"chartAge[unit]=[""不明"",""2M"",""4M"",""6M"",""8M"",""10M"",""12M"",""16M"",""20M"",""24M"",""32M"",""40M"",""48M""]",,,,,,,,
-editUrl=https://docs.google.com/spreadsheets/d/1zl_t39t46GXZ-zR0EtzqRroD18T9jZPg-mEPAz_P1NQ/edit?gid=1062660194#gid=1062660194

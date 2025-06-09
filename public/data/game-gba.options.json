@@ -1,6 +1,11 @@
 {
   "dataType": 0,
   "title": "「ゲームボーイアドバンス」ソフト一覧",
+  "common": {
+    "unit": "タイトル"
+  },
+  "searchPrefixDataIndex": 5,
+  "searchPrefix": "ゲームボーイアドバンス",
   "dataReference": "<ul><li><a target='_blank' href='http://pasofami.game.coocan.jp/game/game.htm'>各種ゲーム機 カセット・ソフトタイトルリスト@pasofami</a></li><li><a target='_blank' href='http://www.gamegyokai.com/rank/gba.htm'>ゲームボーイアドバンスソフト販売本数@ゲーム業界.com</a></li><li>wikipedia</ul>",
   "detailType": "city",
   "isMakeAutocompleteData": true,
@@ -12,7 +17,9 @@
     "imagePath": "/img/game/gba",
     "imageTooltip": "all",
     "orderYmd": true,
-    "orderUI": true
+    "orderUI": true,
+    "orderUIUnitPrefix": "売上本数",
+    "orderUIUnit": "万本"
   },
   "chartDate": {
     "elasticY": false,
@@ -58,12 +65,41 @@
   "chartJobCat": {},
   "chartEx": [
     {
-      "scale": false,
-      "isLegend": false
+      "name": "👥クリエイターズ👨‍💼👨‍💻🎨",
+      "isDcSunburstChart": true,
+      "dcSunburstChart": {
+        "keyIndex": "👨‍💼$10/👨‍💻$11/🎨$12",
+        "width": 600,
+        "height": 600
+      },
+      "orderDesc": true,
+      "legend": {
+        "isShow": false
+      }
     },
     {
-      "scale": false,
-      "isLegend": false
+      "name": "👨‍💼ディレクター",
+      "orderDesc": true
+    },
+    {
+      "name": "👨‍💻プログラマー",
+      "orderDesc": true
+    },
+    {
+      "name": "🎨デザイナー/美術",
+      "orderDesc": true
+    },
+    {
+      "name": "🎵音楽",
+      "orderDesc": true
+    },
+    {
+      "name": "📝シナリオ",
+      "orderDesc": true
+    },
+    {
+      "name": "💼プロデューサー",
+      "orderDesc": true
     }
   ],
   "chartDetail": {}

@@ -1,7 +1,11 @@
 {
   "dataType": 0,
   "title": "「プレイステーション」ソフト一覧",
-  "searchPrefix": "プレイステーション",
+  "common": {
+    "unit": "タイトル"
+  },
+  "searchPrefixDataIndex": 5,
+  "searchPrefix": "プレイステーション1",
   "dataReference": "<ul><li><a target='_blank' href='https://www.gavas.jp/user_data/playstation_game_title.php'>初代プレイステーションのゲームタイトル一覧@ピコピコ大百科</a></li><li><a target='_blank' href='https://www.gavas.jp/user_data/playstation_game_ranking.php'>初代プレイステーション歴代ソフト売上ランキングTOP50@ピコピコ大百科</a></li><li><a target='_blank' href='https://ja.wikipedia.org/wiki/PlayStationのゲームタイトル一覧'>PlayStationのゲームタイトル一覧@wikipedia</a></li></ul>",
   "detailType": "city",
   "isMakeAutocompleteData": true,
@@ -13,7 +17,9 @@
     "imagePath": "/img/game/ps1",
     "imageTooltip": "all",
     "orderYmd": true,
-    "orderUI": true
+    "orderUI": true,
+    "orderUIUnitPrefix": "売上本数",
+    "orderUIUnit": "万本"
   },
   "chartDate": {
     "elasticY": false,
@@ -45,12 +51,41 @@
   "chartJob": {},
   "chartEx": [
     {
-      "scale": false,
-      "isLegend": false
+      "name": "👥クリエイターズ👨‍💼👨‍💻🎨",
+      "isDcSunburstChart": true,
+      "dcSunburstChart": {
+        "keyIndex": "👨‍💼$10/👨‍💻$11/🎨$12",
+        "width": 600,
+        "height": 600
+      },
+      "orderDesc": true,
+      "legend": {
+        "isShow": false
+      }
     },
     {
-      "scale": false,
-      "isLegend": false
+      "name": "👨‍💼ディレクター",
+      "orderDesc": true
+    },
+    {
+      "name": "👨‍💻プログラマー",
+      "orderDesc": true
+    },
+    {
+      "name": "🎨デザイナー/美術",
+      "orderDesc": true
+    },
+    {
+      "name": "🎵音楽",
+      "orderDesc": true
+    },
+    {
+      "name": "📝シナリオ",
+      "orderDesc": true
+    },
+    {
+      "name": "💼プロデューサー",
+      "orderDesc": true
     }
   ],
   "chartDetail": {}
