@@ -18,7 +18,7 @@
         <!-- DC_PANEL ToolbarMain -->
         <div id="toolbar_main">
 
-<!--          <FilerDialogButton :is-show-img="!isSp" :is-tooltip="!isSp"/>-->
+<!--          <FileSelectMenu :data-path="dataPath" :data="selectableData"/>-->
 
           <i class="fa fa-filter fa-icon"></i>
           <input type="search" id="input-search" autocomplete="off"
@@ -163,7 +163,7 @@
                                                                           v-model="pnl.detail.is_show">詳細&nbsp;</label>
             <label for="ch_pnl_ana" v-show="gg.dt===DT_COVID && pnl.ana.is_chk_show">
                 <input id="ch_pnl_ana" type="checkbox" v-model="pnl.ana.is_show">
-                <i class="fa fa-eye"></i>分析
+                <i class="fa fa-eye"></i>比較分析
             </label>
           </span>
         </div>
@@ -406,7 +406,7 @@
               </label>
               &nbsp;&nbsp;
               <label v-if="pnl.date.chart2.type!==0" title="ライン形式のチャートも表示します">
-                <input type="checkbox" v-model="pnl.date.chart2.is_show">📈表示</label>
+                <input type="checkbox" v-model="pnl.date.chart2.is_show">📈Line表示</label>
 
               <span class="ui-icon ui-icon-circle-close sp_icon btn_close" @click="pnl.date.is_show=0"></span>
 
@@ -437,13 +437,9 @@
           </div>
 
           <!-- DC_PANEL Year -->
-          <div id="panel_year" class="bg-theme-col2 dc_panel drag" :style="pnl.year.style" v-show="pnl.year.is_show">
+          <div id="panel_year" class="bg-theme-col2 dc_panel drag panel_year" :style="pnl.year.style" v-show="pnl.year.is_show">
             <div class="chart-title-wrap">
               <span class="chart-title text-theme-col2" v-html="pnl.year.title"></span>
-              <a class="reset btn_reset" id="btn_reset_year" href="javascript:void(0);" style="display: none;">
-                <span class="ui-icon ui-icon-closethick"></span>
-              </a>
-              <input type="text" class="filter_txt tt_filter" readonly style="display: none;">
 
               <!-- TODO: StackTypeComponent -->
               <label title="チャートのスタックタイプを切り替えます">📊
@@ -455,6 +451,12 @@
                 <label v-html="pnl.cond.title" for="stack_type_con"></label>
               </label>
 
+              <!-- FilterText -->
+              <a class="reset btn_reset" id="btn_reset_year" href="javascript:void(0);" style="display: none;">
+                <span class="ui-icon ui-icon-closethick"></span>
+              </a>
+              <input type="text" class="filter_txt tt_filter" readonly style="display: none;">
+
               <span class="ui-icon ui-icon-circle-close sp_icon btn_close" @click="pnl.year.is_show=0"></span>
             </div>
             <div>
@@ -464,16 +466,19 @@
           </div>
 
           <!-- DC_PANEL Season -->
-          <div id="panel_season" class="bg-theme-col2 dc_panel drag" :style="pnl.season.style"
+          <div id="panel_season" class="bg-theme-col2 dc_panel drag panel_season" :style="pnl.season.style"
                v-show="pnl.season.is_show">
             <div class="chart-title-wrap">
               <span class="chart-title text-theme-col2"
                     v-html="(pnl.season.title.indexOf('性別')===-1 ? '' : '<i class=\'fa fa-venus-mars\'>') + pnl.season.title">
               </span>
+
+              <!-- FilterText -->
               <a class="reset btn_reset" id="btn_reset_season" href="javascript:void(0);" style="display: none;">
                 <span class="ui-icon ui-icon-closethick"></span>
               </a>
               <input type="text" class="filter_txt tt_filter" readonly style="display: none;">
+
               <span class="ui-icon ui-icon-circle-close sp_icon btn_close" @click="pnl.season.is_show=0"></span>
             </div>
             <div>
@@ -483,14 +488,17 @@
           </div>
 
           <!-- DC_PANEL Week-->
-          <div id="panel_week" class="bg-theme-col2 dc_panel drag" :style="pnl.week.style"
+          <div id="panel_week" class="bg-theme-col2 dc_panel drag panel_week" :style="pnl.week.style"
                v-show="pnl.week.is_show">
             <div class="chart-title-wrap">
               <span class="chart-title text-theme-col2" v-html="pnl.week.title"></span>
+
+              <!-- FilterText -->
               <a class="reset btn_reset" id="btn_reset_week" href="javascript:void(0);" style="display: none;">
                 <span class="ui-icon ui-icon-closethick"></span>
               </a>
               <input type="text" class="filter_txt tt_filter" readonly style="display: none;">
+
               <span class="ui-icon ui-icon-circle-close sp_icon btn_close" @click="pnl.week.is_show=0"></span>
             </div>
             <div>
@@ -500,15 +508,10 @@
           </div>
 
           <!-- DC_PANEL Sex-->
-          <div id="panel_sex" class="bg-theme-col2 dc_panel drag" :style="pnl.sex.style" v-show="pnl.sex.is_show">
+          <div id="panel_sex" class="bg-theme-col2 dc_panel drag panel_sex" :style="pnl.sex.style" v-show="pnl.sex.is_show">
             <div class="chart-title-wrap">
               <span class="chart-title text-theme-col2"
                     v-html="(pnl.sex.title.indexOf('性別')===-1 ? '' : '<i class=\'fa fa-venus-mars\'>') + pnl.sex.title"></span>
-              <a class="reset btn_reset" id="btn_reset_sex" href="javascript:void(0);" style="display: none;">
-                <span class="ui-icon ui-icon-closethick"></span>
-              </a>
-              <input type="text" class="filter_txt tt_filter" readonly style="display: none;">
-
               <template v-if="pnl.sex.chartType === 'bar'">
                 <!-- TODO: BtnComponent -->
                 <label class="ui-button ui-button-min ui-corner-all ui-widget"
@@ -528,6 +531,12 @@
                 </label>
               </template>
 
+              <!-- FilterText -->
+              <a class="reset btn_reset" id="btn_reset_sex" href="javascript:void(0);" style="display: none;">
+                <span class="ui-icon ui-icon-closethick"></span>
+              </a>
+              <input type="text" class="filter_txt tt_filter" readonly style="display: none;">
+
               <span class="ui-icon ui-icon-circle-close sp_icon btn_close" @click="pnl.sex.is_show=0"></span>
             </div>
             <div>
@@ -537,7 +546,7 @@
           </div>
 
           <!-- DC_PANEL Age-->
-          <div id="panel_age" class="bg-theme-col2 dc_panel drag" :style="pnl.age.style" v-show="pnl.age.is_show">
+          <div id="panel_age" class="bg-theme-col2 dc_panel drag panel_age" :style="pnl.age.style" v-show="pnl.age.is_show">
             <div class="chart-title-wrap">
               <span class="chart-title text-theme-col2" v-html="pnl.age.title"></span>&nbsp;
 
@@ -549,10 +558,12 @@
                 <input type="checkbox" v-model="pnl.age.elasticX" class="hidden"/>
               </label>
 
+              <!-- FilterText -->
               <a class="reset btn_reset" id="btn_reset_age" href="javascript:void(0);" style="display: none;">
                 <span class="ui-icon ui-icon-closethick"></span>
               </a>
               <input type="text" class="filter_txt tt_filter" readonly style="display: none;">
+
               <span class="ui-icon ui-icon-circle-close sp_icon btn_close" @click="pnl.age.is_show=0"></span>
             </div>
             <div>
@@ -562,7 +573,7 @@
           </div>
 
           <!-- DC_PANEL Cond -->
-          <div id="panel_cond" class="bg-theme-col2 dc_panel drag" :style="pnl.cond.style" v-show="pnl.cond.is_show">
+          <div id="panel_cond" class="bg-theme-col2 dc_panel drag panel_cond" :style="pnl.cond.style" v-show="pnl.cond.is_show">
             <div class="chart-title-wrap">
               <span class="chart-title text-theme-col2"
                     v-html="(pnl.cond.title.indexOf('状態')===-1 ? '' : '<i class=\'fa fa-medkit\'>') + pnl.cond.title"></span>
@@ -575,10 +586,12 @@
                 <input type="checkbox" v-model="pnl.cond.elasticX" class="hidden"/>
               </label>
 
+              <!-- FilterText -->
               <a class="btn_reset" id="btn_reset_cond" href="javascript:void(0);" style="display: none;">
                 <span class="ui-icon ui-icon-closethick"></span>
               </a>
               <input type="text" class="filter_txt tt_filter" readonly style="display: none;">&nbsp;
+
               <span v-html="pnl.cond.info"></span>
               <span class="ui-icon ui-icon-circle-close sp_icon btn_close" @click="pnl.cond.is_show=0"></span>
             </div>
@@ -588,7 +601,7 @@
           </div>
 
           <!-- DC_PANEL Job -->
-          <div id="panel_job" class="scrollbar-thin bg-theme-col2 dc_panel drag" :style="pnl.job.style"
+          <div id="panel_job" class="scrollbar-thin bg-theme-col2 dc_panel drag panel_job" :style="pnl.job.style"
                v-show="pnl.job.is_show">
             <div class="chart-title-wrap">
               <span class="chart-title text-theme-col2"
@@ -604,6 +617,7 @@
                 <input type="checkbox" v-model="pnl.job.elasticX" class="hidden"/>
               </label>
 
+              <!-- FilterText -->
               <a class="btn_reset" id="btn_reset_job" href="javascript:void(0);" style="display: none;">
                 <span class="ui-icon ui-icon-closethick"></span>
               </a>
@@ -621,36 +635,79 @@
           <div v-for="(item, i) in pnl.ex" :id="`panel_ex_${i}`" class="bg-theme-col2 dc_panel drag panel_ex"
                :style="item.style"
                v-show="item.is_show">
-            <div class="chart-title-wrap">
-              <span class="chart-title text-theme-col2" v-html="item.title"></span>
-              <a class="reset btn_reset" :id="`btn_reset_ex_${i}`" href="javascript:void(0);" style="display: none;">
-                <span class="ui-icon ui-icon-closethick"></span>
-              </a>
-              <input type="text" class="filter_txt tt_filter" readonly style="display: none;">
+            <template v-if="!item.isDcSunburstChart">
+              <div class="chart-title-wrap">
+                <span class="chart-title text-theme-col2" v-html="item.title"></span>
 
-              <!-- TODO: BtnComponent -->
-              <label class="ui-button ui-button-min ui-corner-all ui-widget"
-                     :class="item.elasticX ? 'btn_on' : 'btn_off'"
-                     title="ソートありなしを切り替えます">
-                <img src="/img/chart-sort-asc.svg" class="dark:invert -rotate-90 -scale-y-100" style="width:1.2em;">
-                <input type="checkbox" v-model="item.elasticX" class="hidden"/>
-              </label>
+                <!-- TODO: BtnComponent -->
+                <label class="ui-button ui-button-min ui-corner-all ui-widget"
+                       :class="item.elasticX ? 'btn_on' : 'btn_off'"
+                       title="ソートありなしを切り替えます">
+                  <img src="/img/chart-sort-asc.svg" class="dark:invert -rotate-90 -scale-y-100" style="width:1.2em;">
+                  <input type="checkbox" v-model="item.elasticX" class="hidden"/>
+                </label>
 
-              <!-- TODO: StackTypeComponent -->
-              <label title="チャートのスタックタイプを切り替えます">📊
-                <input type="radio" id="stack_type_pl1" v-model="pnl.date.stack_type" :value="1">
-                <label v-html="pnl.name.title" for="stack_type_pl1"></label>&nbsp;
-                <input type="radio" id="stack_type_age" v-model="pnl.date.stack_type" :value="2">
-                <label v-html="pnl.age.title" for="stack_type_age"></label>&nbsp;
-                <input type="radio" id="stack_type_con" v-model="pnl.date.stack_type" :value="0">
-                <label v-html="pnl.cond.title" for="stack_type_con"></label>
-              </label>
+                <!-- TODO: StackTypeComponent -->
+                <label title="チャートのスタックタイプを切り替えます">📊
+                  <input type="radio" id="stack_type_pl1" v-model="pnl.date.stack_type" :value="1">
+                  <label v-html="pnl.name.title" for="stack_type_pl1"></label>&nbsp;
+                  <input type="radio" id="stack_type_age" v-model="pnl.date.stack_type" :value="2">
+                  <label v-html="pnl.age.title" for="stack_type_age"></label>&nbsp;
+                  <input type="radio" id="stack_type_con" v-model="pnl.date.stack_type" :value="0">
+                  <label v-html="pnl.cond.title" for="stack_type_con"></label>
+                </label>
 
-              <span class="ui-icon ui-icon-circle-close sp_icon btn_close" @click="item.is_show=0"></span>
-            </div>
-            <div>
-              <div :id="`chart_ex_${i}`"></div>
-            </div>
+                <!-- FilterText -->
+                <a class="reset btn_reset" :id="`btn_reset_ex_${i}`" href="javascript:void(0);" style="display: none;">
+                  <span class="ui-icon ui-icon-closethick"></span>
+                </a>
+                <input type="text" class="filter_txt tt_filter" readonly style="display: none;">
+
+                <span class="ui-icon ui-icon-circle-close sp_icon btn_close" @click="item.is_show=0"></span>
+              </div>
+
+              <div>
+                <div :id="`chart_ex_${i}`"></div>
+              </div>
+            </template>
+            <template v-if="item.isDcSunburstChart">
+              <DcSunburstChart
+                v-if="mm.isLoadAllData"
+                :ndx="mm.ndx"
+                :chartId="`chart_ex_${i}`"
+                chartGroup="chartGroup"
+                v-model:filters="mm.chartEx[i].filters"
+                :innerRadius="mm.opt.chartEx[i]?.innerRadius"
+                :showLabels="true"
+                :legend="mm.opt.chartEx[i]?.isLegend ? mm.opt.chartEx[i]?.dcSunburstChart.legend: {isShow: false}"
+                :keyIndex="mm.opt.chartEx[i]?.dcSunburstChart?.keyIndex ?? D_EX0+i"
+                :valueIndex="mm.opt.chartEx[i]?.dcSunburstChart?.valueIndex ?? D_CNT"
+                :margins="mm.opt.chartEx[i]?.dcSunburstChart?.margins"
+                @filtered="(event) => onFilteredSunburstChart(i, event)"
+              >
+                <template #header="{chart}">
+                  <div class="chart-title-wrap">
+                    <span class="chart-title text-theme-col2" v-html="item.title"></span>
+
+                    <!-- FilterText -->
+                    <template v-if="chart.filters().length > 0">
+                      <a href="javascript:void(0);"
+                         @click="chart.filterAll();dc.redrawAll('chartGroup');">
+                        <span class="ui-icon ui-icon-closethick"></span>
+                      </a>
+                      <input type="text" readonly
+                             class="dsc_filter_txt"
+                             :value="chart.filters().map(path => path.join('/')).join(',')"
+                             :title="chart.filters().map(path => path.join('/')).join(',')">
+                    </template>
+
+                    <!-- Close button -->
+                    <span class="ui-icon ui-icon-circle-close sp_icon btn_close ui-button ui-corner-all ui-widget"
+                          @click="item.is_show=0"></span>
+                  </div>
+                </template>
+              </DcSunburstChart>
+            </template>
             <div class="clearfix"></div>
           </div>
 
@@ -669,261 +726,8 @@
           </div>
 
           <!-- DC_PANEL Analyze -->
-          <div id="panel_ana" class="bg-theme-col2 dc_panel drag" v-show="pnl.ana.is_show" style="display: none;">
-            <div class="chart-title-wrap">
-              <span class="chart-title text-theme-col2" v-html="pnl.ana.title"></span>
-              <span class="ui-icon ui-icon-circle-close sp_icon btn_close" @click="pnl.ana.is_show=0"></span>
-            </div>
-            <div class="clearfix"></div>
+          <DcPanelAnalyze v-if="!pnl.ana.isHidden" :options="pnl.ana" :is-sp="isSp" @close="pnl.ana.is_show=0"/>
 
-
-            <div id="ana_diff_ls">
-              <table id="tbl_ana" border="1" bordercolor="#b0b0b0" style="float:left;">
-                <caption class="bg-theme-col">第N波</caption>
-                <thead>
-                <tr>
-                  <th><span class="ui-icon ui-icon-window"></span>左ウインドウ</th>
-                  <th></th>
-                  <th><span class="ui-icon ui-icon-window"></span>右ウィンドウ</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                  <td>全国 第1波(前半)<br/><a class="wopen"
-                                              href="covid19.html?date=3-16+4-19&light=1">3/15(日)～4/19(日)</a>
-                  </td>
-                  <td>
-                    <div class="wopen diff"><span class="ui-icon ui-icon-arrow-2-e-w ic_btn"></span>比較
-                    </div>
-                  </td>
-                  <td>全国 第2波(前半)<br/><a class="wopen"
-                                              href="covid19.html?date=6-22+7-26&light=1">6/22(月)～7/26(日)</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="diff wopen"><span class="ui-icon ui-icon-arrow-2-n-s ic_btn"></span>比較
-                    </div>
-                  </td>
-                  <td></td>
-                  <td>
-                    <div class="diff wopen"><span class="ui-icon ui-icon-arrow-2-n-s ic_btn"></span>比較
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>千葉県 第1波<br/><a class="wopen"
-                                          href="covid19.html?name=千葉県&date=3-21+32&light=1">3/21(土)～4/22(水)</a>
-                  </td>
-                  <td>
-                    <div class="wopen diff"><span class="ui-icon ui-icon-arrow-2-e-w ic_btn"></span>比較
-                    </div>
-                  </td>
-                  <td>千葉県 第2波<br/><a class="wopen"
-                                          href="covid19.html?name=千葉県&date=6-21+32&light=1">6/21(日)～7/23(木)</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="diff wopen"><span class="ui-icon ui-icon-arrow-2-n-s ic_btn"></span>比較
-                    </div>
-                  </td>
-                  <td></td>
-                  <td>
-                    <div class="diff wopen"><span class="ui-icon ui-icon-arrow-2-n-s ic_btn"></span>比較
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>福岡県 第1波<br/><a class="wopen"
-                                          href="covid19.html?name=福岡県&date=3-26+17&light=1">3/26(木)～4/12(日)</a>
-                  </td>
-                  <td>
-                    <div class="wopen diff"><span class="ui-icon ui-icon-arrow-2-e-w ic_btn"></span>比較
-                    </div>
-                  </td>
-                  <td>福岡県 第3波<br/><a class="wopen"
-                                          href="covid19.html?name=福岡県&date=7-09+17&light=1">7/9(木)～7/26(日)</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="diff wopen"><span class="ui-icon ui-icon-arrow-2-n-s ic_btn"></span>比較
-                    </div>
-                  </td>
-                  <td></td>
-                  <td>
-                    <div class="diff wopen"><span class="ui-icon ui-icon-arrow-2-n-s ic_btn"></span>比較
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>福岡市 第1波<br/><a class="wopen"
-                                          href="covid19.html?q=福岡市&date=3-26+17&light=1">3/26(木)～4/12(日)</a>
-                  </td>
-                  <td>
-                    <div class="wopen diff"><span class="ui-icon ui-icon-arrow-2-e-w ic_btn"></span>比較
-                    </div>
-                  </td>
-                  <td>福岡市 第2波<br/><a class="wopen"
-                                          href="covid19.html?q=福岡市&date=7-09+17&light=1">7/9(木)～7/26(日)</a>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
-              <table id="tbl_ana" border="1" bordercolor="#b0b0b0">
-                <caption class="bg-theme-col">地域</caption>
-                <thead>
-                <tr>
-                  <th><span class="ui-icon ui-icon-window"></span>左ウインドウ</th>
-                  <th></th>
-                  <th><span class="ui-icon ui-icon-window"></span>右ウィンドウ</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                  <td><a class="wopen" href="covid19.html?q=福岡市&light=1">福岡市</a></td>
-                  <td>
-                    <div class="wopen diff"><span class="ui-icon ui-icon-arrow-2-e-w ic_btn"></span>比較
-                    </div>
-                  </td>
-                  <td><a class="wopen" href="covid19.html?q=北九州市&light=1">北九州市</a></td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="wopen diff"><span class="ui-icon ui-icon-arrow-2-n-s ic_btn"></span>比較
-                    </div>
-                  </td>
-                  <td></td>
-                  <td>
-                    <div class="wopen diff"><span class="ui-icon ui-icon-arrow-2-n-s ic_btn"></span>比較
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td><a class="wopen" href="covid19.html?q=札幌市&light=1">札幌市</a></td>
-                  <td>
-                    <div class="wopen diff"><span class="ui-icon ui-icon-arrow-2-e-w ic_btn"></span>比較
-                    </div>
-                  </td>
-                  <td><a class="wopen" href="covid19.html?q=旭川市&light=1">旭川市</a></td>
-                </tr>
-                <tr>
-                  <td>東京都隣接県A<br/><a class="wopen"
-                                           href="covid19.html?name=埼玉県&light=1">埼玉県</a></td>
-                  <td>
-                    <div class="wopen diff"><span class="ui-icon ui-icon-arrow-2-e-w ic_btn"></span>比較
-                    </div>
-                  </td>
-                  <td>東京都隣接県B<br/><a class="wopen" href="covid19.html?name=神奈川県&light=1">神奈川県</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="wopen diff"><span class="ui-icon ui-icon-arrow-2-n-s ic_btn"></span>比較
-                    </div>
-                  </td>
-                  <td></td>
-                  <td>
-                    <div class="wopen diff"><span class="ui-icon ui-icon-arrow-2-n-s ic_btn"></span>比較
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>大阪府隣接県A<br/><a class="wopen"
-                                           href="covid19.html?name=兵庫県&light=1">兵庫県</a></td>
-                  <td>
-                    <div class="wopen diff"><span class="ui-icon ui-icon-arrow-2-e-w ic_btn"></span>比較
-                    </div>
-                  </td>
-                  <td>大阪府隣接県B<br/><a class="wopen"
-                                           href="covid19.html?name=京都府&light=1">京都府</a></td>
-                </tr>
-                </tbody>
-              </table>
-              <table id="tbl_ana" border="1" bordercolor="#b0b0b0">
-                <caption class="bg-theme-col">職業、その他</caption>
-                <thead>
-                <tr>
-                  <th><span class="ui-icon ui-icon-window"></span>左ウインドウ</th>
-                  <th></th>
-                  <th><span class="ui-icon ui-icon-window"></span>右ウィンドウ</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                  <td><a class="wopen" href="covid19.html?q=学生&light=1">学生</a></td>
-                  <td>
-                    <div class="wopen diff"><span class="ui-icon ui-icon-arrow-2-e-w ic_btn"></span>比較
-                    </div>
-                  </td>
-                  <td><a class="wopen" href="covid19.html?q=医療従事者&light=1">医療従事者</a></td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="wopen diff"><span class="ui-icon ui-icon-arrow-2-n-s ic_btn"></span>比較
-                    </div>
-                  </td>
-                  <td></td>
-                  <td>
-                    <div class="wopen diff"><span class="ui-icon ui-icon-arrow-2-n-s ic_btn"></span>比較
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td><a class="wopen" href="covid19.html?q=社会人&light=1">社会人</a></td>
-                  <td>
-                    <div class="wopen diff"><span class="ui-icon ui-icon-arrow-2-e-w ic_btn"></span>比較
-                    </div>
-                  </td>
-                  <td><a class="wopen" href="covid19.html?q=介護職員&light=1">介護職員</a></td>
-                </tr>
-                <tr>
-                  <td><a class="wopen" href="covid19.html?name=福岡県&q=学生&light=1">福岡県 学生</a>
-                  </td>
-                  <td>
-                    <div class="wopen diff"><span class="ui-icon ui-icon-arrow-2-e-w ic_btn"></span>比較
-                    </div>
-                  </td>
-                  <td><a class="wopen" href="covid19.html?name=福岡県&q=医療従事者&light=1">福岡県
-                    医療従事者</a></td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="diff wopen"><span class="ui-icon ui-icon-arrow-2-n-s ic_btn"></span>比較
-                    </div>
-                  </td>
-                  <td></td>
-                  <td>
-                    <div class="diff wopen"><span class="ui-icon ui-icon-arrow-2-n-s ic_btn"></span>比較
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td><a class="wopen" href="covid19.html?name=北海道&q=学生&light=1">北海道 学生</a>
-                  </td>
-                  <td>
-                    <div class="wopen diff"><span class="ui-icon ui-icon-arrow-2-e-w ic_btn"></span>比較
-                    </div>
-                  </td>
-                  <td><a class="wopen" href="covid19.html?name=北海道&q=医療従事者&light=1">北海道
-                    医療従事者</a></td>
-                </tr>
-                </tbody>
-              </table>
-              <div class="clearfix"></div>
-            </div>
-            <ul>
-              <li><span class="wopen ui-icon ui-icon ui-icon-arrow-2-e-w sp_icon"></span>&nbsp;<span
-                class="wopen ui-icon ui-icon ui-icon-arrow-2-n-s sp_icon"></span>
-                の比較ボタンをクリックすると比較用にウインドウが左右２つ開きます。<b><a
-                  tt_title="WEBブラウザの設定によってウインドウの複数オープンがブロックされている場合があります。<br /><img src='/img/hlp/popupblock_chrome.gif'><br /><br />以下の操作で設定の変更が可能です。<br />1.アドレスバーの右上にあるをクリック<br />2.「http://***のポップアップを常に許可する」にチェックを入れる">※開かない時</a></b>
-              </li>
-              <li>このサイトのURLのパラメタについては<b><a
-                tt_title="■URLの例<br />福岡県 の状況の場合<br />https://sakanaclub.xsrv.jp/dc/covid19/name=福岡県<br /><br />福岡県 4/4(月)～5/2(土) 職業:看護師 の状況の場合<br />https://sakanaclub.xsrv.jp/dc/covid19/name=福岡県&date=4-4+5-2&q=看護師<br /><br />■パラメタの説明<br />＊name: 都道府県<br />例 name=福岡県<br />   name=福岡県+佐賀県  ...複数形式<br /><br />＊date: 日付<br />例 date=4-11     ...単一日形式  4月11日<br />　 date=4-4+5-8  ...範囲日形式  4月4日~5月8日<br />　 date=4-4+14   ...範囲日形式2 4月4日 + 14days<br /><br />＊q: 検索キーワード (市区町村・職業・状態等のキーワード)<br />例 q=北九州市 ...市区町村<br />　 q=看護師　 ...職業等<br />">こちらを参照</a></b>
-              </li>
-            </ul>
-          </div>
           <div class="clearfix"></div>
         </div>
 
@@ -954,7 +758,7 @@
 </template>
 
 <script setup>
-import {onMounted, ref, watch, reactive} from "vue";
+import {onMounted, ref, watch, reactive, nextTick} from "vue";
 import * as d3 from 'd3';
 
 import * as dc from 'dc';
@@ -979,10 +783,13 @@ import 'virtual-keyboard/dist/css/keyboard.min.css';
 import 'virtual-keyboard/dist/js/jquery.keyboard.min.js';
 
 // Components
+import DcSunburstChart from "@/components/dashboard/DcSunburstChart.vue";
 import YoutubeVidInput from "@/components/dashboard/YoutubeVidInput.vue";
 import GoogleMap from "@/components/dashboard/GoogleMap.vue";
+import DcPanelAnalyze from "@/components/dashboard/DcPanelAnalyze.vue";
 import Covid19PrefectureDatatable from "@/components/dashboard/Covid19PrefectureDatatable.vue";
 // import FilerDialogButton from "@/components/dashboard/FilerDialogButton.vue";
+// import FileSelectMenu from "@/components/dashboard/FileSelectMenu.vue";
 
 import {
   PREFECTURES,
@@ -1030,7 +837,7 @@ import {
 
 const BASE = import.meta.env.DEV ? '/' : import.meta.env.VITE_DOCUMENT_ROOT;
 const G_IS_LOCAL = import.meta.env.DEV;
-const G_IS_TUBE_SEARCH = 1 // import.meta.env.PROD; // YoutubeAPIを呼ぶか
+const G_IS_TUBE_SEARCH = import.meta.env.PROD; // YoutubeAPIを呼ぶか? ※開発中に無駄にApiを呼ぶのを避ける時は0にする
 
 // データタイプ
 const DT_DEF = 0;   //0:汎用的なDCデータ
@@ -1134,7 +941,9 @@ const props = defineProps({
       'covid19-japan.jpg': 'covid19-data-2021-02-28.csv',
       'food-ramen.jpg': 'food-ramen.csv',
       'ja-weather-precipitation.jpg': 'ja-weather-precipitation.csv',
+      'ja-weather-precipitation-3.jpg': 'ja-weather-precipitation-3.csv',
       'ja-weather-temperature.jpg': 'ja-weather-temperature.csv',
+      'ja-weather-temperature-3.jpg': 'ja-weather-temperature-3.csv',
       'ja-quake-noto-safety.jpg': 'ja-quake-noto-safety.csv',
       'ja-tokyo-gubernatorial-election.jpg': 'ja-tokyo-gubernatorial-election.csv',
       'resas-agriculture.jpg': 'resas-agriculture.csv',
@@ -1336,7 +1145,7 @@ const pnl = reactive({
     {
       isHidden: true,
       is_show: false,
-      title: 'Ex0',
+      title: 'chartEx0',
       style: '',
       info: '',
       elasticX: false,
@@ -1344,7 +1153,7 @@ const pnl = reactive({
     {
       isHidden: true,
       is_show: false,
-      title: 'Ex1',
+      title: 'chartEx1',
       style: '',
       info: '',
       elasticX: false,
@@ -1352,7 +1161,7 @@ const pnl = reactive({
     {
       isHidden: true,
       is_show: false,
-      title: 'Ex2',
+      title: 'chartEx2',
       style: '',
       info: '',
       elasticX: false,
@@ -1360,7 +1169,7 @@ const pnl = reactive({
     {
       isHidden: true,
       is_show: false,
-      title: 'Ex3',
+      title: 'chartEx3',
       style: '',
       info: '',
       elasticX: false,
@@ -1368,7 +1177,7 @@ const pnl = reactive({
     {
       isHidden: true,
       is_show: false,
-      title: 'Ex4',
+      title: 'chartEx4',
       style: '',
       info: '',
       elasticX: false,
@@ -1376,7 +1185,7 @@ const pnl = reactive({
     {
       isHidden: true,
       is_show: false,
-      title: 'Ex5',
+      title: 'chartEx5',
       style: '',
       info: '',
       elasticX: false,
@@ -1384,7 +1193,7 @@ const pnl = reactive({
     {
       isHidden: true,
       is_show: false,
-      title: 'Ex6',
+      title: 'chartEx6',
       style: '',
       info: '',
       elasticX: false,
@@ -1392,7 +1201,71 @@ const pnl = reactive({
     {
       isHidden: true,
       is_show: false,
-      title: 'Ex7',
+      title: 'chartEx7',
+      style: '',
+      info: '',
+      elasticX: false,
+    },
+    {
+      isHidden: true,
+      is_show: false,
+      title: 'chartEx8',
+      style: '',
+      info: '',
+      elasticX: false,
+    },
+    {
+      isHidden: true,
+      is_show: false,
+      title: 'chartEx9',
+      style: '',
+      info: '',
+      elasticX: false,
+    },
+    {
+      isHidden: true,
+      is_show: false,
+      title: 'chartEx10',
+      style: '',
+      info: '',
+      elasticX: false,
+    },
+    {
+      isHidden: true,
+      is_show: false,
+      title: 'chartEx11',
+      style: '',
+      info: '',
+      elasticX: false,
+    },
+    {
+      isHidden: true,
+      is_show: false,
+      title: 'chartEx12',
+      style: '',
+      info: '',
+      elasticX: false,
+    },
+    {
+      isHidden: true,
+      is_show: false,
+      title: 'chartEx13',
+      style: '',
+      info: '',
+      elasticX: false,
+    },
+    {
+      isHidden: true,
+      is_show: false,
+      title: 'chartEx14',
+      style: '',
+      info: '',
+      elasticX: false,
+    },
+    {
+      isHidden: true,
+      is_show: false,
+      title: 'chartEx15',
       style: '',
       info: '',
       elasticX: false,
@@ -1455,6 +1328,14 @@ const getPanelSettings = () => {
 const onChangeSettings = () => {
   settingsSave();
 };
+const applyRangeChartSettings = () => {
+  if (mm.opt.chartDate.isRangeChart) {
+    mm.composite2.rangeChart(mm.composite);
+  } else if (mm.opt.chartDate2.isRangeChart) {
+    mm.composite2.brushOn(true)
+    mm.composite.rangeChart(mm.composite2);
+  }
+}
 const onChangeChartDateChart2IsShow = (newVal) => {
   settingsSave();
   if (!newVal || mm.composite2 !== null) return;
@@ -1464,6 +1345,7 @@ const onChangeChartDateChart2IsShow = (newVal) => {
     case mm.opt.chartDate2.chartType === 'lines':
       pnl.date.chart2.type = CHART_DATE2_TYPE_LINES;
       initChartDate2Stacks(mm.config.cDate.width, false);
+      applyRangeChartSettings();
       break;
     case gg.dt === DT_COVID:
       pnl.date.chart2.type = CHART_DATE2_TYPE_COVID;
@@ -1472,10 +1354,12 @@ const onChangeChartDateChart2IsShow = (newVal) => {
     case mm.opt.chartDate2.chartType === 'stacks':
       pnl.date.chart2.type = CHART_DATE2_TYPE_STACKS;
       initChartDate2Stacks(mm.config.cDate.width, true);
+      applyRangeChartSettings();
       break;
     case mm.opt.chartDate2.chartType === 'series':
       pnl.date.chart2.type = CHART_DATE2_TYPE_SERIES;
       initChartDate2TypeSeries(mm.config.cDate.width);
+      applyRangeChartSettings();
       break;
   }
   mm.dateStackShow(STACK_CND);
@@ -1592,7 +1476,12 @@ const setPanelXYWH = (id = null, absType = 0) => {
   ];
   for (let k = 0; k < pnl.ex.length; k++) {
     if (pnl.ex[k].isHidden) continue;
-    panelConfig.push({id: `panel_ex_${k}`, panel: pnl.ex[k], selector: `#panel_ex_${k}`, param: false});
+    panelConfig.push({
+      id: `panel_ex_${k}`,
+      panel: pnl.ex[k],
+      selector: `#panel_ex_${k}`,
+      param: pnl.ex[k].isDcSunburstChart, // isH: heightの保存可否
+    });
   }
 
   if (absType === 2) {
@@ -1661,6 +1550,8 @@ onMounted(async () => {
     isDark.value = isDarkLs; // trigger watch
     onDocumentReady();
 
+    mm.isLoadAllData = true;
+
     mm.parseURLParams();
 
     if (gg.dt === DT_DEF && pnl.city.orderUI && !mm.opt.chartCity.orderYmd) {
@@ -1677,6 +1568,16 @@ onMounted(async () => {
     }
     if (G_IS_LOCAL) {
       mm.local.onLoadAllDataAfter();
+    }
+
+    mm.setPanelFromDataOptionsAfterLoad();
+
+    if (mm.is_trigger_search) {
+      $('#input-search').trigger('input-search-update');
+      if (!pnl.tube.vidAutoChange) {
+        // 1番目の再生ボタンを押す。btn_searchのdetail取得はリクエストがあるので遅延実行
+        _.delay(() => $('.detail:last .detail-tube-play:eq(0)').trigger('click'), 600);
+      }
     }
   });
 });
@@ -1707,8 +1608,15 @@ watch(() => pnl.map.is_show, is_show => {
 watch(() => pnl.name.is_show, onChangeSettings);
 watch(() => pnl.city.is_show, onChangeSettings);
 watch(() => pnl.city.orderCnt, v => {
-  if (mm.url_data.data.indexOf('game-') === 0) {
-    pnl.common.unitPrefix = pnl.city.orderUI ? (pnl.city.orderCnt ? '売上本数(万本)' : 'タイトル') : '';
+  if (pnl.city.orderUI) {
+    if (pnl.city.orderCnt) {
+      pnl.common.unitPrefix = mm.opt.chartCity.orderUIUnitPrefix;
+      pnl.common.unit = mm.opt.chartCity.orderUIUnit;
+    } else {
+      pnl.common.unitPrefix = mm.opt.common.unitPrefix;
+      pnl.common.unit = mm.opt.common.unit;
+    }
+    mm.onChangeURL('name2_order', pnl.city.orderCnt ? 1 : 0);
   }
 
   // Sum/Countタイプの切り替え。(例: 売り上げ本数合計/タイトル数)
@@ -1731,6 +1639,13 @@ watch(() => pnl.city.orderCnt, v => {
 
   let chartSexW = 148;
   let chartSexH = 158;
+
+  // chartDate2
+  if (pnl.date.chart2.is_show) {
+    mm.composite2 = null;
+    mm.chartDate2 = null;
+    onChangeChartDateChart2IsShow(true)
+  }
 
   initChartYear(chartSexH);
 
@@ -1786,6 +1701,9 @@ watch(() => pnl.age.elasticX, v => {
     .ordering(v ? t => (gg.dt === DT_COVID ? -t.value.total : -t.value) : dc.pluck('key'))
     .elasticX(true)
     .render();
+
+  // URL parameter update
+  mm.onChangeURL('name4_order', v ? 1 : 0);
 });
 watch(() => pnl.cond.is_show, onChangeSettings);
 watch(() => pnl.cond.elasticX, v => {
@@ -1793,6 +1711,9 @@ watch(() => pnl.cond.elasticX, v => {
     .ordering(v ? t => -t.value : dc.pluck('key'))
     .elasticX(true)
     .render();
+
+  // URL parameter update
+  mm.onChangeURL('name5_order', v ? 1 : 0);
 });
 watch(() => pnl.job.is_show, onChangeSettings);
 watch(() => pnl.job.elasticX, v => {
@@ -1810,13 +1731,19 @@ watch(() => pnl.job.elasticX, v => {
   mm.chartJob
     .ordering(v ? t => -t.value : dc.pluck('key'))
     .elasticX(true)
-    .render()
+    .render();
+
+  // URL parameter update
+  mm.onChangeURL('name6_order', v ? 1 : 0);
 });
 watch(() => pnl.ex, onChangeSettings, {deep: true});
 watch(() => pnl.detail.is_show, onChangeSettings);
 watch(() => pnl.ana.is_show, onChangeSettings);
 watch(() => pnl.date.stack_type, (v) => {
   mm.dateStackShow(v);
+
+  // Stackの影響をうけるチャートを再描画
+  mm.chartCity.render();
 
   mm.composite.render();
   mm.chartYear.render();
@@ -1827,24 +1754,26 @@ watch(() => pnl.date.stack_type, (v) => {
     mm.composite2?.render();
   }
   for (let k = 0; k < pnl.ex.length; k++) {
-    if (pnl.ex[k].isHidden) continue
+    if (pnl.ex[k].isHidden || pnl.ex[k].isDcSunburstChart) continue
     mm.chartEx[k].render();
   }
 });
 watch(isDark, (newVal) => {
   const head = document.querySelector('#chart_map .ui-widget-header');
   if (newVal) {
-    document.getElementById('jqui-stylesheet').setAttribute('href', BASE + 'jquery-ui/themes/dark-hive/jquery-ui.min.css');
     head?.classList.remove('light');
     document.body.style.backgroundColor = '#1F2937';
     document.body.classList.add('dark');
+    document.documentElement.classList.add('dark');
+    document.getElementById('jqui-stylesheet').setAttribute('href', BASE + 'jquery-ui/themes/dark-hive/jquery-ui.min.css');
     IMG_NO = '/img/noimage-dark.png';
     localStorage.theme = 'dark';
   } else {
-    document.getElementById('jqui-stylesheet').setAttribute('href', BASE + 'jquery-ui/themes/blitzer/jquery-ui.min.css');
     head?.classList.add('light');
     document.body.style.backgroundColor = '#F0F0F0';
     document.body.classList.remove('dark');
+    document.documentElement.classList.remove('dark');
+    document.getElementById('jqui-stylesheet').setAttribute('href', BASE + 'jquery-ui/themes/blitzer/jquery-ui.min.css');
     IMG_NO = '/img/noimage.png';
     localStorage.theme = 'light';
   }
@@ -1883,7 +1812,8 @@ const mm = {
     },
     cCond: {
       barWidth: 40,
-      colors: COL_CND
+      colors: COL_CND,
+      ordinalColors : isDark ? d3.schemeDark2 : colorbrewer.Pastel1[9]
     },
     cJob: {
       TD: 750,       //transitionDuration
@@ -2037,6 +1967,7 @@ const mm = {
     },
   },
   get: {},
+  isLoadAllData: false,
   is_trigger_search: false,
   url_data: {
     'path': props.dataPath,
@@ -2087,7 +2018,8 @@ const mm = {
   opt: {
     dataType: DT_DEF, // DT_DEF|DT_COVID,
     common: {
-      unit: ''
+      unit: '',
+      unitPrefix: ''
     },
     chartGMap: {},
     chartSView: {},
@@ -2095,7 +2027,14 @@ const mm = {
     chartMap: {},
     chartName: {},
     chartCity: {},
-    chartDate: {},
+    chartDate: {
+      isRangeChart: false,
+      isFilterMissingCorrect: false
+    },
+    chartDate2: {
+      isRangeChart: false,
+      isFilterMissingCorrect: true
+    },
     chartYear: {},
     chartSeason: {},
     chartWeek: {},
@@ -2282,6 +2221,9 @@ const mm = {
     if (mm.opt.common.unit) {
       pnl.common.unit = mm.opt.common.unit;
     }
+    if (mm.opt.common.unitPrefix) {
+      pnl.common.unitPrefix = mm.opt.common.unitPrefix;
+    }
     if (mm.opt.dataReference) {
       pnl.common.dataReference = mm.opt.dataReference;
     }
@@ -2352,13 +2294,63 @@ const mm = {
     if (mm.opt.chartCity?.orderYmd) {
       if (mm.opt.chartCity.orderUI) {
         pnl.city.orderUI = mm.opt.chartCity.orderUI;
-        if (mm.url_data.data.indexOf('game-') === 0) {
-          pnl.common.unitPrefix = pnl.city.orderUI ? (pnl.city.orderCnt ? '売上本数(万本)' : 'タイトル') : '';
+        if (pnl.city.orderUI) {
+          if (pnl.city.orderCnt) {
+            pnl.common.unitPrefix = mm.opt.chartCity.orderUIUnitPrefix;
+            pnl.common.unit = mm.opt.chartCity.orderUIUnit;
+          } else {
+            pnl.common.unitPrefix = mm.opt.common.unitPrefix;
+            pnl.common.unit = mm.opt.common.unit;
+          }
         }
       }
     } else {
       mm.opt.chartCity.orderYmd = false;
     }
+  },
+  // データオプション(mm.opt)系をpnlに反映 - データロード後
+  setPanelFromDataOptionsAfterLoad: () => {
+    if(gg.dt === DT_COVID) {
+      pnl.ana.href = location.origin + location.pathname + `?data=${mm.url_data.data}`;
+    }
+    // chartEx
+    pnl.ex.forEach((panel, index) => {
+      if (panel.isHidden) return;
+
+      if (panel.isDcSunburstChart) {
+        mm.setPanelSunburstChartStyle(panel, index);
+        return;
+      }
+
+      panel.elasticX = mm.opt.chartEx[index]?.orderDesc ?? false;
+    });
+
+    pnl.ana.isHidden = gg.dt !== DT_COVID;
+  },
+
+  // サンバーストチャートのスタイル設定
+  setPanelSunburstChartStyle: (panel, index) => {
+    // サイズは、localStrageの設定がなければ、Jsonオプションの設定を利用
+    if (panel.style !== '') return;
+
+    const chartConfig = mm.opt.chartEx[index]?.dcSunburstChart;
+    if (!chartConfig) return;
+
+    const styles = [];
+
+    // 幅の設定
+    if (chartConfig.width) {
+      const marginLeft = chartConfig.margins?.left ?? 0;
+      const totalWidth = chartConfig.width + marginLeft;
+      styles.push(`width:${totalWidth}px`);
+    }
+
+    // 高さの設定
+    if (chartConfig.height) {
+      styles.push(`height:${chartConfig.height}px`);
+    }
+
+    panel.style += styles.join(';') + (styles.length > 0 ? ';' : '');
   },
   data_hdr: [],
 
@@ -2491,15 +2483,21 @@ const mm = {
     // 名前に付加されたタグ系情報の削除
     removeLabelSuffix: function (d) {
       let name = d;
+      // case: <Label>(<XXX>) -> <Label>
       if (d.indexOf('(') !== -1) {
-        name = d.split('(')[0]; // case: <Label>(<XXX>)
-        if (mm.opt.removeLabelSufixType) {// case: <Label>♂(<AGE>)
-          name = name.replace(/[ ♂♀]/g, '');
-        }
-      } else {
-        name = d;
+        name = d.split('(')[0];
       }
-      return name.replace(TAGICON_DS, '').replace(TAGICON_CD, ''); // case: <NAME><TAGICON>
+      name = name.replace(new RegExp(`[ ♂♀]|${TAGICON_DS}|${TAGICON_CD}`, 'g'), '');
+      if (mm.opt?.removeLabelSuffixType === 'c') {
+        // nameの後ろのアルファベット記号を除去。 ex) プレイヤーC -> プレイヤー プレイヤーC+ -> プレイヤー
+        // ただし、数字の場合は除去しない。 ex) プレイヤー2 -> プレイヤー2
+        // ただし、nameがすべてアルファベットの場合は除去しない ex) Player2 -> Player2
+        const isAlpha = /^[A-Za-z]+$/.test(name);
+        if (!isAlpha) {
+          name = name.replace(/[A-Za-z]+$/, '');
+        }
+      }
+      return name
     },
     initPanelsWH: function () {
       const pos = mm.util.relToAbsPos('#panels');
@@ -2512,7 +2510,7 @@ const mm = {
         $('#panel_age').width(mm.chartAge.width());
         $('#panel_cond').width(mm.chartCond.width());
         for (let k = 0; k < pnl.ex.length; k++) {
-          if (pnl.ex[k].isHidden) continue
+          if (pnl.ex[k].isHidden || pnl.ex[k].isDcSunburstChart) continue
           $(`#panel_ex_${k}`).width(mm.chartEx[k].width());
         }
       }
@@ -2559,100 +2557,6 @@ const mm = {
         }
       }
       return address;
-    },
-    replaceSearchWordE2J: (s) => {
-      let ret = '';
-      s = s.toLowerCase();
-      switch (true) {
-        case s.indexOf('@') !== -1: // @tube のような予約語
-          ret = '';
-          break;
-        case s.indexOf('sega') !== -1:
-          ret = 'セガ';
-          break;
-        case s.indexOf('capcom') !== -1:
-          ret = 'カプコン';
-          break;
-        case s.indexOf('namco') !== -1:
-          ret = 'ナムコ';
-          break;
-        case s.indexOf('konami') !== -1:
-          ret = 'コナミ';
-          break;
-        case s.indexOf('taito') !== -1:
-          ret = 'タイトー';
-          break;
-        case s.indexOf('irem') !== -1:
-          ret = 'アイレム';
-          break;
-        case s.indexOf('nintendo') !== -1:
-          ret = '任天堂';
-          break;
-        case s.indexOf('jaleco') !== -1:
-          ret = 'ジャレコ';
-          break;
-        case s.indexOf('banpresto') !== -1:
-          ret = 'バンプレスト';
-          break;
-        case s.indexOf('nichibutsu') !== -1:
-          ret = '日本物産	';
-          break;
-        case s.indexOf('dataeast') !== -1:
-          ret = 'データイースト	';
-          break;
-        case s.indexOf('msx') !== -1:
-          ret = 'MSX';
-          break;
-        case s.indexOf('sms') !== -1:
-          ret = 'マスターシステム';
-          break;
-        case s.indexOf('smc') !== -1 || s.indexOf('sfc') !== -1:
-          ret = 'スーパーファミコン';
-          break;
-        case s.indexOf('fc') !== -1 || s.indexOf('nes') !== -1:
-          ret = 'ファミコン';
-          break;
-        case s.indexOf('pce') !== -1:
-          ret = 'PCエンジン';
-          break;
-        case s.indexOf('smd') !== -1 || s.indexOf('md') !== -1:
-          ret = 'メガドライブ';
-          break;
-        case s.indexOf('n64') !== -1:
-          ret = 'NINTENDO64';
-          break;
-        case s.indexOf('fds') !== -1:
-          ret = 'ディスクシステム';
-          break;
-        case s.indexOf('gba') !== -1:
-          ret = 'ゲームボーイアドバンス';
-          break;
-        case s.indexOf('gb') !== -1:
-          ret = 'ゲームボーイ';
-          break;
-        case s.indexOf('ps1') !== -1:
-          ret = 'プレイステーション1';
-          break;
-        case s.indexOf('gc') !== -1:
-          ret = 'ゲームキューブ';
-          break;
-        case s.indexOf('ws') !== -1:
-          ret = 'ワンダースワン';
-          break;
-        case s.indexOf('gg') !== -1:
-          ret = 'ゲームギア';
-          break;
-        case s.indexOf('vb') !== -1:
-          ret = 'バーチャルボーイ';
-          break;
-        case s.indexOf('gen') !== -1:
-          ret = 'ゲーム機';
-          break;
-        default:
-          ret = '';
-          break;
-      }
-      return ret;
     },
     isMatchRegexI: (word, keyword) => {
       try {
@@ -2761,6 +2665,9 @@ const mm = {
                 if (mm.opt.chartAge.unit !== undefined && mm.opt.chartAge.unit !== null) {
                   row[D_AGE] = parseInt(row[D_AGE]);
                 }
+                if (mm.opt.chartCity.orderYmd) {
+                  row[D_CND] = row[D_CND] === DN_KEY2 ? '?' : row[D_CND];
+                }
               }
               if (row[D_CNT] !== undefined) row[D_CNT] = parseInt(row[D_CNT]);
 
@@ -2787,114 +2694,46 @@ const mm = {
       }
     },
     stackedTitle: (d, keyFormat = null, unit = '名') => {
-      let is_bar = isNaN(d.value);
-      let s_suf = '';
-      if (gg.dt === DT_COVID) {
-        switch (1) {
-          default:
-            let ymd = moment(d.key).format('YYYY-MM-DD');
-            if (ymd === mm.opt.assets.chartDateLineYmdMsg[0][0]) {
-              s_suf = mm.opt.assets.chartDateLineYmdMsg[0][1];
-              break;
-            }
-            if (ymd === mm.opt.assets.chartDateLineYmdMsg[1][0]) {
-              s_suf = mm.opt.assets.chartDateLineYmdMsg[1][1];
-              break;
-            }
-            if (ymd === mm.opt.assets.chartDateLineYmdMsg[2][0]) {
-              s_suf = mm.opt.assets.chartDateLineYmdMsg[2][1];
-              break;
-            }
-            if (ymd === mm.opt.assets.chartDateLineYmdMsg[3][0]) {
-              s_suf = mm.opt.assets.chartDateLineYmdMsg[3][1];
-              break;
-            }
-            if (ymd === mm.opt.assets.chartDateLineYmdMsg[4][0]) {
-              s_suf = mm.opt.assets.chartDateLineYmdMsg[4][1];
-              break;
-            }
-
-            if (ymd === mm.opt.assets.chartDateLineYmdMsg[5][0]) {
-              s_suf = mm.opt.assets.chartDateLineYmdMsg[5][1];
-              break;
-            }
-            if (ymd === mm.opt.assets.chartDateLineYmdMsg[6][0]) {
-              s_suf = mm.opt.assets.chartDateLineYmdMsg[6][1];
-              break;
-            }
-
-            if (ymd === mm.opt.assets.chartDateLineYmdMsg[7][0]) {
-              s_suf = mm.opt.assets.chartDateLineYmdMsg[7][1];
-              break;
-            }
-            if (ymd === mm.opt.assets.chartDateLineYmdMsg[8][0]) {
-              s_suf = mm.opt.assets.chartDateLineYmdMsg[8][1];
-              break;
-            }
-            if (ymd === mm.opt.assets.chartDateLineYmdMsg[9][0]) {
-              s_suf = mm.opt.assets.chartDateLineYmdMsg[9][1];
-              break;
-            }
-            if (ymd === mm.opt.assets.chartDateLineYmdMsg[10][0]) {
-              s_suf = mm.opt.assets.chartDateLineYmdMsg[10][1];
-              break;
-            }
-
-            if (ymd === mm.opt.assets.chartDateLineYmdMsg[11][0]) {
-              s_suf = mm.opt.assets.chartDateLineYmdMsg[11][1];
-              break;
-            }
-            if (ymd === mm.opt.assets.chartDateLineYmdMsg[12][0]) {
-              s_suf = mm.opt.assets.chartDateLineYmdMsg[12][1];
-              break;
-            }
-            if (ymd === mm.opt.assets.chartDateLineYmdMsg[13][0]) {
-              s_suf = mm.opt.assets.chartDateLineYmdMsg[13][1];
-              break;
-            }
-            if (ymd === mm.opt.assets.chartDateLineYmdMsg[14][0]) {
-              s_suf = mm.opt.assets.chartDateLineYmdMsg[14][1];
-              break;
-            }
-
-            if (ymd === mm.opt.assets.chartDateLineYmdMsg[15][0]) {
-              s_suf = mm.opt.assets.chartDateLineYmdMsg[15][1];
-              break;
-            }
-            if (ymd === mm.opt.assets.chartDateLineYmdMsg[16][0]) {
-              s_suf = mm.opt.assets.chartDateLineYmdMsg[16][1];
-              break;
-            }
-            if (ymd === mm.opt.assets.chartDateLineYmdMsg[17][0]) {
-              s_suf = mm.opt.assets.chartDateLineYmdMsg[17][1];
-              break;
-            }
-            if (ymd === mm.opt.assets.chartDateLineYmdMsg[18][0]) {
-              s_suf = mm.opt.assets.chartDateLineYmdMsg[18][1];
-              break;
-            }
-            if (ymd === mm.opt.assets.chartDateLineYmdMsg[19][0]) {
-              s_suf = mm.opt.assets.chartDateLineYmdMsg[19][1];
-              break;
-            }
-            if (ymd === mm.opt.assets.chartDateLineYmdMsg[20][0]) {
-              s_suf = mm.opt.assets.chartDateLineYmdMsg[20][1];
-              break;
-            }
-            break;
-        }
-      }
-
+      // unit = ' ' + unit;
+      let isBar = isNaN(d.value);
       let keyStr = keyFormat ? keyFormat(d.key) : d.key;
 
-      if (!is_bar) {
+      if (!isBar) {
         //N日 移動平均
         return keyStr + '\n週間移動平均: ' + php_number_format(d.value) + unit;
       }
 
       let flt = mm.chartName.filters();
-      let pref_mode = flt.length > 1 && flt.length <= mm.chartStack[STACK_PL1].length;
-      if (pref_mode) {
+      let prefMode = flt.length > 1 && flt.length <= mm.chartStack[STACK_PL1].length;
+
+      let suffix = '';
+      if (gg.dt === DT_COVID) {
+        let ymd = moment(d.key).format('YYYY-MM-DD');
+        const msgMap = mm.opt.assets.chartDateLineYmdMsg.reduce((map, [key, value]) => {
+          map[key] = value;
+          return map;
+        }, {});
+        suffix = msgMap[ymd] || '';
+      }
+
+      // case chatDate2
+      if (gg.dt === DT_COVID && d.value.pre) {
+        if (prefMode) {
+          let s = ''
+          let nmcnt = d.value.pre[mm.chartDate2Mode];
+          let total = 0;
+          for (let f of flt) {
+            s += nmcnt[f] ? (f + ': ' + php_number_format(nmcnt[f]) + unit + '\n') : '';
+            total += nmcnt[f];
+          }
+          return keyStr + '\n────────\n' + s + (flt.length > 1 ? '────────\n計: ' + php_number_format(total) + unit : '') + '\n' + suffix;
+        } else {
+          return keyStr + '\n────────\n' +
+            '計: ' + (d.value.all[mm.chartDate2Mode] === 0 ? '' : php_number_format(d.value.all[mm.chartDate2Mode]) + unit + '\n') + suffix;
+        }
+      }
+
+      if (prefMode) {
         let s = '';
         for (let f of flt) {
           if (d.value.nmcnt[f]) {
@@ -2902,9 +2741,9 @@ const mm = {
             const itemPercent = _.round(100 * itemValue / d.value.total, 1);
             s += f + ': ' + itemValue + unit +
               (itemPercent !== 100 ? (' (' + itemPercent + '%)') : '') + '\n';
+          }
         }
-        }
-        return keyStr + '\n────────\n' + s + (flt.length > 1 ? '────────\n計: ' + d.value.total + unit : '') + '\n' + s_suf;
+        return keyStr + '\n────────\n' + s + (flt.length > 1 ? '────────\n計: ' + d.value.total + unit : '') + '\n' + suffix;
       } else if (pnl.date.stack_type === STACK_AGE) {
         let s = '';
         let per = 0;
@@ -2915,7 +2754,7 @@ const mm = {
           s += php_sprintf("%' -8s", nm) + ': ' + php_sprintf("%' 3s", php_number_format(d.value.agcnt[i])) + unit +
             (per !== 100 ? (' (' + per + '%)') : '') + '\n';
         }
-        return keyStr + '\n──────────\n' + s + (per === 100 ? '' : ('──────────\n計: ' + php_number_format(d.value.total) + unit)) + '\n' + s_suf;
+        return keyStr + '\n──────────\n' + s + (per === 100 ? '' : ('──────────\n計: ' + php_number_format(d.value.total) + unit)) + '\n' + suffix;
       } else { // stack_type==='con'
         if (gg.dt === DT_COVID) {
           return keyStr + '\n────────\n' +
@@ -2924,7 +2763,7 @@ const mm = {
             (d.value.lv_c === 0 ? '' : CND_LV_C + ': ' + d.value.lv_c + unit + '\n') +
             (d.value.lv_d === 0 ? '' : CND_LV_D + ': ' + d.value.lv_d + unit + '\n') +
             (d.value.lv_e === 0 ? '' : CND_LV_E + ': ' + d.value.lv_e + unit + '\n') +
-            '────────\n計: ' + php_number_format(d.value.total) + unit + '\n' + s_suf;
+            '────────\n計: ' + php_number_format(d.value.total) + unit + '\n' + suffix;
         } else {
           let s = '';
           let per = 0;
@@ -2935,7 +2774,7 @@ const mm = {
             s += php_sprintf("%' -8s", nm) + ': ' + php_sprintf("%' 3s", php_number_format(d.value.cdcnt[i])) + unit +
               (per !== 100 ? (' (' + per + '%)') : '') + '\n';
           }
-          return keyStr + '\n──────────\n' + s + (per === 100 ? '' : ('──────────\n計: ' + php_number_format(d.value.total) + unit)) + '\n' + s_suf;
+          return keyStr + '\n──────────\n' + s + (per === 100 ? '' : ('──────────\n計: ' + php_number_format(d.value.total) + unit)) + '\n' + suffix;
         }
       }
     },
@@ -3530,7 +3369,7 @@ const mm = {
 
     for (let k = 0; k < pnl.ex.length; k++) {
       const ex = pnl.ex[k];
-      if (ex.isHidden) continue;
+      if (ex.isHidden || ex.isDcSunburstChart) continue;
       const exFilters = mm.chartEx[k].filters().map(v => mm.getLabelEx(v, k));
       if (exFilters.length) {
         const isMulti = exFilters.length > 1
@@ -3682,6 +3521,9 @@ const mm = {
 
     // chartCity
     isRedraw = mm.chart.filterFromGetParam(mm.chartCity, 'name2', isRedraw);
+    if (pnl.city.orderUI) {
+      if (mm.get.name2_order === '1') pnl.city.orderCnt = true;
+    }
 
     if (mm.get.name2_filter) {
       $(mm.keyboardInputCity).val(mm.get.name2_filter).data('keyboard_Input_val', mm.get.name2_filter);
@@ -3740,6 +3582,25 @@ const mm = {
     isRedraw = mm.chart.filterFromGetParam(mm.chartEx[5], 'name12', isRedraw);
     isRedraw = mm.chart.filterFromGetParam(mm.chartEx[6], 'name13', isRedraw);
     isRedraw = mm.chart.filterFromGetParam(mm.chartEx[7], 'name14', isRedraw);
+
+    // Chart order parameters
+    nextTick(() => {
+      // chartSex, chartAge, chartCond, chartJob order parameters
+      if (mm.get.name3_order === '1') pnl.sex.elasticX = true;
+      if (mm.get.name4_order === '1') pnl.age.elasticX = true;
+      if (mm.get.name5_order === '1') pnl.cond.elasticX = true;
+      if (mm.get.name6_order === '1') pnl.job.elasticX = true;
+
+      // chartEx order parameters
+      if (mm.get.name7_order === '1') pnl.ex[0].elasticX = true;
+      if (mm.get.name8_order === '1') pnl.ex[1].elasticX = true;
+      if (mm.get.name9_order === '1') pnl.ex[2].elasticX = true;
+      if (mm.get.name10_order === '1') pnl.ex[3].elasticX = true;
+      if (mm.get.name11_order === '1') pnl.ex[4].elasticX = true;
+      if (mm.get.name12_order === '1') pnl.ex[5].elasticX = true;
+      if (mm.get.name13_order === '1') pnl.ex[6].elasticX = true;
+      if (mm.get.name14_order === '1') pnl.ex[7].elasticX = true;
+    });
 
     // 検索INPUT
     if (mm.get.q) {
@@ -3816,6 +3677,14 @@ const mm = {
       case 'name12': // chartEx[5]
       case 'name13': // chartEx[6]
       case 'name14': // chartEx[7]
+      case 'name15': // chartEx[8]
+      case 'name16': // chartEx[9]
+      case 'name17': // chartEx[10]
+      case 'name18': // chartEx[11]
+      case 'name19': // chartEx[12]
+      case 'name20': // chartEx[13]
+      case 'name21': // chartEx[14]
+      case 'name22': // chartEx[15]
         if (type !== 'name' && type !== 'name2') {
           mm.lastFilteredChart = arg;
         }
@@ -3837,6 +3706,19 @@ const mm = {
         break;
       case 'name_filter':
       case 'name2_filter':
+      case 'name2_order':
+      case 'name3_order':
+      case 'name4_order':
+      case 'name5_order':
+      case 'name6_order':
+      case 'name7_order':
+      case 'name8_order':
+      case 'name9_order':
+      case 'name10_order':
+      case 'name11_order':
+      case 'name12_order':
+      case 'name13_order':
+      case 'name14_order':
         url = url_append_param(location.href, {[type]: arg});
         window.history.replaceState({}, '', url);
         break;
@@ -3883,18 +3765,39 @@ const mm = {
             'name_filter',
             'name2',
             'name2_filter',
+            'name2_order',
             'name3',
+            'name3_order',
             'name4',
+            'name4_order',
             'name5',
+            'name5_order',
             'name6',
+            'name6_order',
             'name7',
+            'name7_order',
             'name8',
+            'name8_order',
             'name9',
+            'name9_order',
             'name10',
+            'name10_order',
             'name11',
+            'name11_order',
             'name12',
+            'name12_order',
             'name13',
+            'name13_order',
             'name14',
+            'name14_order',
+            'name15',
+            'name16',
+            'name17',
+            'name18',
+            'name19',
+            'name20',
+            'name21',
+            'name22',
             'date',
             'year',
             'season',
@@ -4058,16 +3961,15 @@ const mm = {
         default:
           if (maxLabelLen > 10) {
             $(chart._anchor).addClass('label-x-rot');
-            chart.margins({top: 0, right: 0, bottom: 100, left: 40})
+            chart.margins().bottom = 100;
             break;
           }
           if (maxLabelLen > 6) {
             $(chart._anchor).addClass('label-x-rot');
-            chart.margins({top: 0, right: 0, bottom: 70, left: 40})
+            chart.margins().bottom = 70;
             break;
           }
-
-          chart.margins({top: 0, right: 0, bottom: 20, left: 40})
+          chart.margins().bottom = 20;
           break;
       }
     },
@@ -4155,8 +4057,8 @@ const mm = {
         });
 
         // 監視対象の要素を指定
-        const lazyImages = rootDiv.querySelectorAll('.pl');
-        lazyImages.forEach(image => {
+        const lazyImages = rootDiv?.querySelectorAll('.pl');
+        lazyImages?.forEach(image => {
           observer.observe(image);
         });
       }
@@ -4234,11 +4136,6 @@ const mm = {
     },
     setDetails: async function (chart, filters, dataIndex, detailType = false) {
       const imagePath = mm.chart.getImagePath(chart) ?? '';
-      // 検索API用KeywordPrefix取得
-      const searchPrefix = mm.opt.searchPrefix ?? '';
-      const searchPrefixP = searchPrefix ? searchPrefix + '+' : '';
-      let searchPrefix2 = mm.util.replaceSearchWordE2J(imagePath);
-      let searchPrefix2P = searchPrefix2 ? searchPrefix2 + '+' : '';
 
       for (let i = 0; i < filters.length; i++) {
         if (pnl.detail.details.length >= pnl.detail.maxDetails) break;
@@ -4258,17 +4155,19 @@ const mm = {
         const n = chart.group().all().find(d => d.key === name)?.value ?? 0;
         const dt = await mm.getDetailInfo(`${name2}`);
 
-        // 検索API用KeywordPrefix取得 (dataより取得)
-        if (mm.opt.searchPrefixDataIndex) {
-          const s = d[mm.opt.searchPrefixDataIndex];
-          searchPrefix2 = mm.util.replaceSearchWordE2J(s);
-          if (searchPrefix2 === '') searchPrefix2 = s;
-          searchPrefix2P = searchPrefix2 ? searchPrefix2 + '+' : '';
-        }
-
-
+        // 検索API用Keywords
+        const searchQueryWords = mm.opt?.searchPrefix ? [mm.opt?.searchPrefix] : [];
         if (isTube) {
-          pnl.tube.searchQuery = `${searchPrefixP}${searchPrefix2P}${name2}`;
+          // 検索API用KeywordPrefix取得 (dataより取得)
+          if (mm.opt.searchPrefixDataIndex) {
+            const isCityChart = chart.chartID() === mm.chartCity.chartID();
+            if (isCityChart) searchQueryWords.push(d[mm.opt.searchPrefixDataIndex]);
+            else searchQueryWords.push(name2);
+          } else {
+            searchQueryWords.push(name2);
+          }
+
+          pnl.tube.searchQuery = searchQueryWords.join('+');
           pnl.tube.vids = await mm.tube.search(pnl.tube.searchQuery);
           youtubePlayHtml = '';
           for (let j = 1; j <= pnl.tube.vids.length; j++) {
@@ -4277,7 +4176,7 @@ const mm = {
             youtubePlayHtml +=
               `&nbsp;<a class="detail-tube-wopen tt_img" src="https://img.youtube.com/vi/${id}/hqdefault.jpg" ` +
               `target="_blank" href="https://www.youtube.com/watch?v=${id}" ` +
-              `title="YouTubeで「${searchPrefix} ${searchPrefix2} ${name2} 」の動画${j}を開く">` +
+              `title="YouTubeで「${searchQueryWords.join(' ')}」の動画${j}を開く">` +
               `<i class="fa fa-video"></i>${j}</a>`;
           }
           youtubePlayHtml += pnl.tube.vids.length ? '&nbsp;' : '';
@@ -4309,8 +4208,8 @@ const mm = {
 							</a>\
 							<img src="/img/yutube.gif">${youtubePlayHtml}\
 							<a target="_blank" class="detail-tube-wopen" \
-								href="https://www.youtube.com/results?search_query=${searchPrefixP}${searchPrefix2P}${name2}" \
-								title="YouTubeで「${pnl.tube.searchQuery.replaceAll('+', ' ')}」の動画一覧を開く">\
+								href="https://www.youtube.com/results?search_query=${pnl.tube.searchQuery}" \
+								title="YouTubeで「${searchQueryWords.join(' ')}」の動画一覧を開く">\
 								一覧<span class="ui-icon ui-icon-extlink" style="font-size: 0.9em"></span>\
 							</a>\
 							<table><tbody>` +
@@ -4333,7 +4232,7 @@ const mm = {
               `<div class="detail-img">\
 										<a class="detail-tube-wopen" target="_blank" \
 											href="https://www.youtube.com/watch?v=${vid}"\
-											title="YouTubeで「${searchPrefix} ${searchPrefix2} ${name2} 」の動画${j + 1}を開く">\
+											title="YouTubeで「${searchQueryWords.join(' ')}」の動画${j + 1}を開く">\
 											<img src="https://img.youtube.com/vi/${vid}/hqdefault.jpg" onerror="this.src='${IMG_NO}'">\
 										</a>\
 									</div>`;
@@ -4446,9 +4345,9 @@ const mm = {
       }
       return ret;
     },
-    createGridLegend: (chartW) => {
+    createGridLegend: (x = 45) => {
       const legend = dc.legend()
-        .x(45).y(10)
+        .x(x).y(10)
         .legendText((d) => {
           let sel_no = d.name.split(':');
           return sel_no.length === 2 ? mm.dateStackPl1Names[sel_no[1]] : d.name;
@@ -4474,19 +4373,19 @@ const mm = {
       } else {
         for (i = 0; i < mm.chartStack[STACK_CND].length; i++) {
           if (i === 0) {
-            chart.group(group, mm.chartStack[STACK_CND][i], mm.dateStackCndAccessor(i));
+            chart.group(group, mm.chartStack[STACK_CND][i], mm.dateStackCndAccessor(i, mm.opt.chartDate.isFilterMissingCorrect));
           } else {
-            chart.stack(group, mm.chartStack[STACK_CND][i], mm.dateStackCndAccessor(i));
+            chart.stack(group, mm.chartStack[STACK_CND][i], mm.dateStackCndAccessor(i, mm.opt.chartDate.isFilterMissingCorrect));
           }
         }
       }
       // スタック登録 - CHART_DATE_STACK_GRP[STACK_PL1]
       for (i = 0; i < mm.chartStack[STACK_PL1].length; i++) {
-        chart.stack(group, mm.chartStack[STACK_PL1][i], mm.dateStackPl1Accessor(chart, i));
+        chart.stack(group, mm.chartStack[STACK_PL1][i], mm.dateStackPl1Accessor(i, mm.opt.chartDate.isFilterMissingCorrect));
       }
       // スタック登録 - CHART_DATE_STACK_GRP[STACK_AGE]
       for (i = 0; i < mm.chartStack[STACK_AGE].length; i++) {
-        chart.stack(group, mm.chartStack[STACK_AGE][i], mm.dateStackAgeAccessor(i));
+        chart.stack(group, mm.chartStack[STACK_AGE][i], mm.dateStackAgeAccessor(i, mm.opt.chartDate.isFilterMissingCorrect));
       }
       return chart;
     },
@@ -4541,11 +4440,16 @@ const mm = {
     },
     filterFromGetParam: (chart, filterKey, isRedraw) => {
       if (mm.get[filterKey]) {
-        const filters = mm.get[filterKey].split(' ');
-        if (filters.length > 0) {
-          const flt = filters.length === 1 ? filters[0] : [filters];
-          chart.filterAll().filter(flt);
-          return true;
+        if (chart?.isDcSunburstChart) {
+          chart.filters = mm.get[filterKey].split(' ').map(v => v.split(','));
+          return chart.filters.length > 0;
+        } else {
+          const filters = mm.get[filterKey].split(' ');
+          if (filters.length > 0) {
+            const flt = filters.length === 1 ? filters[0] : [filters];
+            chart.filterAll().filter(flt);
+            return true;
+          }
         }
       }
       return isRedraw;
@@ -4901,7 +4805,7 @@ const mm = {
             mm.chartDate2?.showStack(stackName);
           }
           for (let k = 0; k < pnl.ex.length; k++) {
-            if (pnl.ex[k].isHidden) continue
+            if (pnl.ex[k].isHidden || pnl.ex[k].isDcSunburstChart) continue;
             mm.chartEx[k].showStack(stackName);
           }
         } else {
@@ -4914,35 +4818,51 @@ const mm = {
             mm.chartDate2?.hideStack(stackName);
           }
           for (let k = 0; k < pnl.ex.length; k++) {
-            if (pnl.ex[k].isHidden) continue
+            if (pnl.ex[k].isHidden || pnl.ex[k].isDcSunburstChart) continue;
             mm.chartEx[k].hideStack(stackName);
           }
         }
       }
     }
   },
-  dateStackCndAccessor: function (no) {
-    return function (d) {
-      return d.value.cdcnt[no];
+  dateStackPrevValue: 0,
+  dateStackPrevName: '',
+  getPreviousValue(stackName, v) {
+    const isZero = v === 0;
+    if (this.dateStackPrevName !== stackName) {
+      this.dateStackPrevValue = 0;
+    }
+    this.dateStackPrevName = stackName;
+
+    if (isZero) {
+      return this.dateStackPrevValue;
+    } else {
+      this.dateStackPrevValue = v;
+      return v;
     }
   },
-  dateStackPl1Accessor: function (chart, no) {
-    return function (d) {
-      let flt = mm.chartName.filters();
-      let pref_mode = flt.length > 1 && flt.length <= mm.chartStack[1].length
-      if (pref_mode) {
-        mm.dateStackPl1Names[no] = flt[no];
-        return d.value.nmcnt[flt[no]] === undefined ? 0 : d.value.nmcnt[flt[no]];
-      } else {
-        mm.dateStackPl1Names[no] = '(選択' + (no + 1) + ')';
-        return 0;
-      }
+  dateStackCndAccessor: (stackName, isFilterMissingCorrect = false) => (d) => {
+    let v = d.value.cdcnt[stackName];
+    if (isFilterMissingCorrect) v = mm.getPreviousValue(stackName, v);
+    return v;
+  },
+  dateStackPl1Accessor: (stackName, isFilterMissingCorrect = false) => (d) => {
+    let flt = mm.chartName.filters();
+    let pref_mode = flt.length > 1 && flt.length <= mm.chartStack[1].length
+    if (pref_mode) {
+      mm.dateStackPl1Names[stackName] = flt[stackName];
+      let v = d.value.nmcnt[flt[stackName]] === undefined ? 0 : d.value.nmcnt[flt[stackName]];
+      if (isFilterMissingCorrect) v = mm.getPreviousValue(stackName, v);
+      return v;
+    } else {
+      mm.dateStackPl1Names[stackName] = '(選択' + (stackName + 1) + ')';
+      return 0;
     }
   },
-  dateStackAgeAccessor: function (no) {
-    return function (d, i) {
-      return d.value.agcnt[no];
-    }
+  dateStackAgeAccessor: (stackName, isFilterMissingCorrect = false) => (d) => {
+    let v = d.value.agcnt[stackName];
+    if (isFilterMissingCorrect) v = mm.getPreviousValue(stackName, v);
+    return v;
   },
   chartScroll: function (sel, name = '', duration = 300) {
     name = name || '';
@@ -5062,13 +4982,11 @@ const mm = {
     return ret;
   },
   loadDcData: (name) => {
-    let promise = Promise.resolve();
-
     mm.get.data = name
     // dataファイルのイメージ画像の設定
     mm.url_data.data = mm.get.data;
-    let imgName = Object.keys(mm.url_data.filer_files).find(key => mm.url_data.filer_files[key].indexOf(mm.url_data.data) === 0);
-    dataImgSrc.value = '<?=BURL?>upload/csv/' + (imgName ?? 'covid19-japan.png');
+    const imgName = Object.keys(mm.url_data.filer_files).find(key => mm.url_data.filer_files[key].indexOf(mm.url_data.data) === 0);
+    dataImgSrc.value = mm.url_data.path + (imgName ?? 'covid19-japan.png');
     $('#loading').css('background-image', 'url(' + dataImgSrc.value + ')').show();
 
     const initDcAfter = () => {
@@ -5095,7 +5013,7 @@ const mm = {
         gg.isPrefTable = gg.dt === DT_COVID;
         doParseOptions = 0;
         if (G_IS_LOCAL) {
-          console.info(`INFO:オプションデータは${location.origin + pathOptionsJson}を使用`);
+          console.info(`INFO:Use Chart Options JSON:${location.origin + pathOptionsJson}`);
         }
         return mm.util.parseOptionsCSV(path, doParseOptions);
       })
@@ -5118,7 +5036,7 @@ const mm = {
   },
   loadAllData: () => {
     mm.get = php_location_get_query();
-    const name = mm.get.data || mm.url_data.data;
+    const name = mm.get?.viewMode === 'story' ? mm.url_data.data : (mm.get.data || mm.url_data.data);
     return mm.loadDcData(name)
       .then(() => {
         mm.init();
@@ -5234,15 +5152,19 @@ if (G_IS_LOCAL) {
     },
   };
 }
-const createStackedBarChart = (dimension, parent, height, barWidth, onFiltered, isLegend, keyFormat = null, panel = null) => {
+const createStackedBarChart = (dimension, parent, height, barWidth, onFiltered, isLegend,
+                               chartOptions = {}, keyFormat = null, panel = null) => {
   let group = dimension.group().reduce(mm.group_reduce.append, mm.group_reduce.remove, mm.group_reduce.init);
   group = mm.groupRemoveKey(group, DN_EX);
   const groupAll = group.all();
 
   // 幅調整
+  const defaultMargins = {top: 0, right: 0, bottom: 20, left: 40};
+  const margins = _.merge({}, defaultMargins, chartOptions?.margins || {});
+
   const n = groupAll.length;
   const barW = n > 16 ? parseInt(0.75 * barWidth) : barWidth;
-  const chartW = (n + 1) * barW;
+  const chartW = (n + 1) * barW + margins.right + margins.left;
   if (!isSp && panel !== null) $(panel).width(chartW);
 
   const chart = new dc.BarChart(parent, "chartGroup");
@@ -5250,7 +5172,7 @@ const createStackedBarChart = (dimension, parent, height, barWidth, onFiltered, 
     .width(chartW)
     .height(height)
     .useViewBoxResizing(mm.config.panelResizable)
-    .margins({top: 0, right: 0, bottom: 20, left: 40})
+    .margins(margins)
     .gap(6)
     .transitionDuration(750)
     .dimension(dimension)
@@ -5284,7 +5206,7 @@ const createStackedBarChart = (dimension, parent, height, barWidth, onFiltered, 
   mm.chart.setStacks(chart, group);
 
   if (isLegend) {
-    const legend = mm.chart.createGridLegend(chartW);
+    const legend = mm.chart.createGridLegend(margins.left === defaultMargins.left ? 45 : 0);
     chart.legend(legend)
     chart.legendToggle = mm.chart.filterByStackName;
   }
@@ -5486,25 +5408,19 @@ const initChartCity = () => {
       }
       mm.onChangeURL('name2', chart);
     })
-    .ordinalColors(isDark ? d3.schemeDark2 : colorbrewer.Pastel1[9])
     .renderLabel(true) //LeftLabel
-    // .label(function(d) {
-    //     let is_filtered = mm.gpCity_all[d.key]!==d.value;
-    //     const n=is_filtered?8:6;
-    //     let s=d.key.substr(0,n);
-    //     for (var i = s.length; i < n+1; i++) s+='　';
-    //     return s+d.value + (is_filtered ? '' : (mm.pref_tbl_city_cnt[d.key] ? '▲'+mm.pref_tbl_city_cnt[d.key] : '' ));
-    // })
-    // .label(function (d) {
-    // 	return php_sprintf("%' -8s", d.key) + php_number_format(d.value);
-    // })
     .label(function (d) {
       let s = d.key;
       const wordNum = (isSp ? 6 : 8); // 何文字目から数字を表示するか？都道府県名は4文字
       for (var i = 0; i < wordNum - d.key.length; i++) s += '　';
       s += ' ';
       return s
-        + (mm.opt.chartCity.isHideLabelValue ? '' : (d.value < (1000 * 1000 * 10) ? php_number_format(d.value) : mm.d3fmt(d.value)));
+        + (mm.opt.chartCity.isHideLabelValue ? '' :
+            (d.value === 1 && mm.opt.chartCity.orderYmd
+                ? ''
+                : (d.value < (1000 * 1000 * 10) ? php_number_format(d.value) : mm.d3fmt(d.value))
+            )
+        );
     })
     .renderTitleLabel(false) //RightLabel & tooltip
     .titleLabelOffsetX(20)
@@ -5513,11 +5429,37 @@ const initChartCity = () => {
     })
     .elasticX(true);
 
-  mm.chartCity.xAxis().ticks(0);
-  if (mm.opt.chartCity.orderYmd) {
-    mm.chartCity.ordering(mm.orderYmd);
+    mm.chartCity.xAxis().ticks(0);
+    if (mm.opt.chartCity.orderYmd) {
+      mm.chartCity.ordering(mm.orderYmd);
+    }
+
+    // color
+    if (mm.opt.chartCity.orderYmd) {
+      mm.chartCity
+        .colors(d => {
+          let c;
+          switch (pnl.date.stack_type) {
+            case STACK_PL1:
+              let i = mm.chartName.filters().indexOf(d[D_PL1])
+              c = COL_NAME[i];
+              break;
+            case STACK_CND:
+              c = mm.config.cCond.colorsTable[d[D_CND]];
+              break;
+            case STACK_AGE:
+              c = mm.config.cAge.colorsTable[d[D_AGE]];
+              break;
+          }
+          return c;
+        })
+        .colorAccessor(d => {
+          return mm.data[mm.citys.indexOf(d.key)];
+        })
+    } else {
+      mm.chartCity.ordinalColors(mm.config.cCond.ordinalColors)
+    }
   }
-}
 
 /**
  * CHART chartDate 感染者数(YYYY-MM-DD) barChart Init
@@ -5583,22 +5525,28 @@ const initChartDate = (chartDateW) => {
 
     for (no = 0; no < mm.chartStack[STACK_CND].length; no++) {
       if (no === 0) {
-        mm.chartDate.group(gpDateStk, mm.chartStack[STACK_CND][no], mm.dateStackCndAccessor(no));
+        mm.chartDate.group(gpDateStk, mm.chartStack[STACK_CND][no], mm.dateStackCndAccessor(no, mm.opt.chartDate.isFilterMissingCorrect));
       } else {
-        mm.chartDate.stack(gpDateStk, mm.chartStack[STACK_CND][no], mm.dateStackCndAccessor(no));
+        mm.chartDate.stack(gpDateStk, mm.chartStack[STACK_CND][no], mm.dateStackCndAccessor(no, mm.opt.chartDate.isFilterMissingCorrect));
       }
       mm.chartStackIdxCnd[mm.chartStack[STACK_CND][no]] = no;
     }
 
     mm.config.cCond.colors = Array(mm.chartStack[STACK_CND].length);
     for (let i = 0; i < mm.config.cCond.colors.length; i++) {
-      // @see [Categorical schemes](https://d3js.org/d3-scale-chromatic/categorical)
-      mm.config.cCond.colors[i] = d3.schemePaired[i % d3.schemePaired.length];
+      mm.config.cCond.colors[i] = mm.config.cCond.ordinalColors[i % mm.config.cCond.ordinalColors.length];
     }
 
     const cndAll = mm.util.getScaledDimensionCond().group().all();
     for (let i = 0; i < cndAll.length; i++) {
       colCondTbl[i] = mm.chartStack[STACK_CND].findIndex(o => o === cndAll[i].key);
+    }
+
+    if (mm.opt.chartCity.orderYmd) {
+      mm.config.cCond.colorsTable = mm.conds.reduce((table, cond, i) => {
+        table[cond] = mm.config.cCond.colors[colCondTbl[i]];
+        return table;
+      }, {});
     }
   }
   //
@@ -5606,7 +5554,7 @@ const initChartDate = (chartDateW) => {
   //
   for (no = 0; no < mm.chartStack[STACK_PL1].length; no++) {
     mm.dateStackPl1Names[no] = '(選択' + (no + 1) + ')';
-    mm.chartDate.stack(gpDateStk, mm.chartStack[STACK_PL1][no], mm.dateStackPl1Accessor(mm.chartDate, no));
+    mm.chartDate.stack(gpDateStk, mm.chartStack[STACK_PL1][no], mm.dateStackPl1Accessor(no, mm.opt.chartDate.isFilterMissingCorrect));
   }
 
   //
@@ -5636,10 +5584,22 @@ const initChartDate = (chartDateW) => {
         colAgeTbl[i] = mm.chartStack[STACK_AGE].findIndex(o => mm.chartStackIdxAge[o] === ageAll[i]);
       }
     }
+
+    if (mm.opt.chartCity.orderYmd) {
+      mm.config.cAge.colors = Array(mm.chartStack[STACK_AGE].length);
+      for (let i = 0; i < mm.config.cAge.colors.length; i++) {
+        mm.config.cAge.colors[i] = COL_AGE[i % COL_AGE.length];
+      }
+      mm.config.cAge.colorsTable = mm.ages.reduce((table, age, i) => {
+        age = mm.opt.chartAge.unit === null ? age : mm.chartStackIdxAge[age];
+        table[age] = mm.config.cAge.colors[colAgeTbl[i]];
+        return table;
+      }, {});
+    }
   }
 
   for (no = 0; no < mm.chartStack[STACK_AGE].length; no++) {
-    mm.chartDate.stack(gpDateStk, mm.chartStack[STACK_AGE][no], mm.dateStackAgeAccessor(no));
+    mm.chartDate.stack(gpDateStk, mm.chartStack[STACK_AGE][no], mm.dateStackAgeAccessor(no, mm.opt.chartDate.isFilterMissingCorrect));
   }
 
   mm.config.cDate.colors = mm.config.cCond.colors.concat(COL_NAME).concat(COL_AGE);
@@ -6125,9 +6085,9 @@ const initChartDate2Stacks = (chartDateW, stackOn) => {
   // スタック登録 - CHART_DATE_STACK_GRP[0]
   for (var no = 0; no < mm.chartStack[STACK_CND].length; no++) {
     if (no === 0) {
-      mm.chartDate2.group(gpDateStk, mm.chartStack[STACK_CND][no], mm.dateStackCndAccessor(no));
+      mm.chartDate2.group(gpDateStk, mm.chartStack[STACK_CND][no], mm.dateStackCndAccessor(no, mm.opt.chartDate2.isFilterMissingCorrect));
     } else {
-      mm.chartDate2.stack(gpDateStk, mm.chartStack[STACK_CND][no], mm.dateStackCndAccessor(no));
+      mm.chartDate2.stack(gpDateStk, mm.chartStack[STACK_CND][no], mm.dateStackCndAccessor(no, mm.opt.chartDate2.isFilterMissingCorrect));
     }
     //mm.CHART_DATE_STACK_GRP_1_IDX[CHART_DATE_STACK_GRP[STACK_CND][no]] = no;
   }
@@ -6135,16 +6095,17 @@ const initChartDate2Stacks = (chartDateW, stackOn) => {
   // スタック登録 - CHART_DATE_STACK_GRP[STACK_PL1]
   for (var no = 0; no < mm.chartStack[STACK_PL1].length; no++) {
     // mm.dateStackPl1Names[no] = '(選択' + (no + 1) + ')';
-    mm.chartDate2.stack(gpDateStk, mm.chartStack[STACK_PL1][no], mm.dateStackPl1Accessor(mm.chartDate2, no));
+    mm.chartDate2.stack(gpDateStk, mm.chartStack[STACK_PL1][no], mm.dateStackPl1Accessor(no, mm.opt.chartDate2.isFilterMissingCorrect));
   }
 
   // スタック登録 - CHART_DATE_STACK_GRP[STACK_AGE]
   for (var no = 0; no < mm.chartStack[STACK_AGE].length; no++) {
-    mm.chartDate2.stack(gpDateStk, mm.chartStack[STACK_AGE][no], mm.dateStackAgeAccessor(no));
+    mm.chartDate2.stack(gpDateStk, mm.chartStack[STACK_AGE][no], mm.dateStackAgeAccessor(no, mm.opt.chartDate2.isFilterMissingCorrect));
   }
 
   mm.chartDate2.ordinalColors(mm.config.cDate.colors);
 
+  const valueFormat = (f) => moment(f).format('YYYY/M/D(ddd)');
   mm.composite2
     .width(chartDateW)
     .height(200)
@@ -6158,10 +6119,11 @@ const initChartDate2Stacks = (chartDateW, stackOn) => {
       right: 0,
       bottom: 20,
       left: 35
-    }).legend(dc.legend().x(isSp ? chartDateW - 200 : 45).y(10).legendText((d) => {
-    let sel_no = d.name.split(':');
-    return sel_no.length === 2 ? mm.dateStackPl1Names[sel_no[1]] : d.name;
-  }))
+    })
+    .legend(dc.legend().x(isSp ? chartDateW - 200 : 45).y(10).legendText((d) => {
+      let sel_no = d.name.split(':');
+      return sel_no.length === 2 ? mm.dateStackPl1Names[sel_no[1]] : d.name;
+    }))
     .x(mm.domainDate ? d3.scaleTime().domain(mm.domainDate) : d3.scaleTime())
     .elasticX(false)
     //.round(d3.timeDay.round)
@@ -6171,56 +6133,7 @@ const initChartDate2Stacks = (chartDateW, stackOn) => {
     .renderVerticalGridLines(true)
     .brushOn(false)
     .elasticY(mm.config.cDate.is_elasticY) //yAxisの高さを動的に変化させる
-    .title(function (d) {
-      let is_bar = isNaN(d.value);
-      let s_suf = '';
-      //let ymd2=moment(d.key).format('YYYYMMDD');
-      //s='累計: '+mm.dateCnt[ymd2]+'名\n'; //TODO:
-      let date_str = typeof (d.key) === "object" ? moment(d.key).format('YYYY/M/D(ddd)') : d.key;
-      if (!is_bar) {
-        //N日 移動平均
-        return date_str + '\n週間移動平均: ' + php_number_format(d.value) + '名';
-      }
-
-      let flt = mm.chartName.filters();
-      let pref_mode = flt.length > 1 && flt.length <= mm.chartStack[STACK_PL1].length;
-      if (pref_mode) {
-        let s = '';
-        for (let f of flt) {
-          s += d.value.nmcnt[f] ? (f + ': ' + d.value.nmcnt[f] + '名\n') : '';
-        }
-        return date_str + '\n────────\n' + s + (flt.length > 1 ? '────────\n計: ' + d.value.total + '名' : '') + '\n' + s_suf;
-      } else if (pnl.date.stack_type === STACK_AGE) {
-        let s = '';
-        for (var i = 0; i < d.value.agcnt.length; i++) {
-          if (d.value.agcnt[i] === 0) continue
-          let per = _.round(100 * d.value.agcnt[i] / d.value.total, 1) + '%';
-          let nm = mm.chartStack[STACK_AGE][i];
-          s += php_sprintf("%' -8s", nm) + ': ' + php_sprintf("%' 3s", php_number_format(d.value.agcnt[i])) + ' (' + per + ')\n';
-        }
-        return date_str + '\n──────────\n' + s + '──────────\n計: ' + php_number_format(d.value.total) + '\n' + s_suf;
-      } else { // tack_type==='con'
-        if (gg.dt === DT_COVID) {
-          return date_str + '\n────────\n' +
-            (d.value.lv_a === 0 ? '' : CND_LV_A + ': ' + d.value.lv_a + '名\n') +
-            (d.value.lv_b === 0 ? '' : CND_LV_B + ': ' + d.value.lv_b + '名\n') +
-            (d.value.lv_c === 0 ? '' : CND_LV_C + ': ' + d.value.lv_c + '名\n') +
-            (d.value.lv_d === 0 ? '' : CND_LV_D + ': ' + d.value.lv_d + '名\n') +
-            (d.value.lv_e === 0 ? '' : CND_LV_E + ': ' + d.value.lv_e + '名\n') +
-            '────────\n計: ' + php_number_format(d.value.total) + '名' + '\n' + s_suf;
-        } else {
-          let s = '';
-          for (var i = 0; i < d.value.cdcnt.length; i++) {
-            if (d.value.cdcnt[i] === 0) continue
-            let per = _.round(100 * d.value.cdcnt[i] / d.value.total, 1) + '%';
-            let nm = mm.chartStack[STACK_CND][i];
-            s += php_sprintf("%' -8s", nm) + ': ' + php_sprintf("%' 3s", php_number_format(d.value.cdcnt[i])) + ' (' + per + ')\n';
-          }
-          return date_str + '\n──────────\n' + s + '──────────\n計: ' + php_number_format(d.value.total) + '\n' + s_suf;
-
-        }
-      }
-    })
+    .title(v => mm.util.stackedTitle(v, valueFormat, mm.opt.common.unit))
     .on('renderlet', function (chart, filter) {
     })
     .on('pretransition', mm.onChartDatePretransition)
@@ -6229,7 +6142,7 @@ const initChartDate2Stacks = (chartDateW, stackOn) => {
       mm.chartDate2.filterAll().filter([mm.composite.filters()]);
     })
     .on('filtered', function (chart, v) {
-      mm.showFilterUi('#panel_date', chart, (f) => moment(f).format('YYYY/M/D(ddd)'));
+      mm.showFilterUi('#panel_date', chart, valueFormat);
       mm.onChartFiltered(chart, v);
       mm.chartScroll('#div_name');
       mm.chartScroll('#div_city');
@@ -6244,11 +6157,6 @@ const initChartDate2Stacks = (chartDateW, stackOn) => {
     return moment(s).format(format);
   });
   mm.composite2.yAxis().tickFormat(d3.format(".2s")).ticks(5); //.tickFormat(d3.format("d"));
-
-  // mm.composite2.brushOn(true)
-  // mm.composite.rangeChart(mm.composite2);
-
-  // mm.composite2.rangeChart(mm.composite);
 }
 
 /**
@@ -6335,10 +6243,6 @@ const initChartDate2TypeSeries = (chartDateW) => {
     return moment(s).format(format);
   });
   mm.composite2.yAxis().tickFormat(d3.format(".2s")).ticks(5); //.tickFormat(d3.format("d"));
-
-  // mm.composite2.brushOn(true)
-  // mm.composite.rangeChart(mm.composite2);
-
 }
 
 /**
@@ -6355,7 +6259,8 @@ const initChartYear = (height) => {
     mm.chartScroll('#div_name');
     mm.chartScroll('#div_city');
   }
-  mm.chartYear = createStackedBarChart(dimYear, '#chart_year', height, mm.config.cYear.barWidth, onFiltered, mm.opt.chartYear.isLegend);
+  mm.chartYear = createStackedBarChart(dimYear, '#chart_year', height, mm.config.cYear.barWidth,
+    onFiltered, mm.opt.chartYear.isLegend, mm.opt.chartYear);
 }
 
 /**
@@ -6519,8 +6424,8 @@ const initChartSex = (chartSexW, chartSexH) => {
     if (mm.opt.chartSex.unit === undefined) mm.opt.chartSex.unit = null;
 
     mm.chartSex = createStackedBarChart(dimSex, chartDomId, chartSexH, mm.config.cSex.barWidth,
-      onFiltered, mm.opt.chartSex.isLegend,
-      v => mm.getLabelSex(v)
+      onFiltered, mm.opt.chartSex.isLegend, mm.opt.chartSex,
+      v => mm.getLabelSex(v),
     );
     mm.chartSex.dataIndex = D_SEX;
 
@@ -6962,10 +6867,22 @@ const initChartJob = (chartSexW, chartSexH) => {
  * CHART chartEx 拡張チャート barChart|pieChart
  */
 const initChartEx = (chartIndex, dataIndex, title, height) => {
+  // オプションが未定義の場合は初期化
   if (mm.opt.chartEx[chartIndex] === undefined) {
     mm.opt.chartEx[chartIndex] = {};
   }
+
+  // パネル設定を更新
+  pnl.ex[chartIndex] = pnl.ex[chartIndex] || {};
+  pnl.ex[chartIndex].chartType = mm.opt.chartEx[chartIndex].chartType;
+  pnl.ex[chartIndex].isHidden = false;
+  pnl.ex[chartIndex].is_show = true;
+  pnl.ex[chartIndex].title = title;
+
+  // ディメンションの作成
   const dim = mm.util.getScaledDimension(dataIndex, mm.opt.chartEx[chartIndex].scale);
+
+  // フィルタリング時の共通処理
   const onFiltered = (chart, v) => {
     const valueFormat = v => mm.getLabelEx(v, chartIndex);
     mm.showFilterUi(`#panel_ex_${chartIndex}`, chart, valueFormat);
@@ -6975,21 +6892,25 @@ const initChartEx = (chartIndex, dataIndex, title, height) => {
     mm.chartScroll('#div_city');
   }
 
-  mm.chartEx[chartIndex] =
-    createStackedBarChart(dim, `#chart_ex_${chartIndex}`, height, mm.config.cEx.barWidth,
-      onFiltered,
-      mm.opt.chartEx[chartIndex].isLegend,
-      v => mm.getLabelEx(v, chartIndex),
-      `#panel_ex_${chartIndex}`
-    );
-  mm.chartEx[chartIndex].dataIndex = dataIndex;
+  // サンバーストチャートかどうか
+  const isDcSunburstChart = mm.opt.chartEx[chartIndex].isDcSunburstChart ?? false;
 
-  pnl.ex[chartIndex].isHidden = false;
-  pnl.ex[chartIndex].is_show = true;
-  pnl.ex[chartIndex].title = title;
-
-  mm.chartEx[chartIndex]
-    .xAxis().tickFormat(v => mm.getLabelEx(v, chartIndex));
+  if (isDcSunburstChart) {
+    // サンバーストチャートの初期化(DcSunburstChart使用の定義)
+    pnl.ex[chartIndex].isDcSunburstChart = isDcSunburstChart;
+    mm.chartEx[chartIndex] = {isDcSunburstChart: true, filters: []};
+  } else {
+    // 標準チャート (stackedBarChart) の作成
+    mm.chartEx[chartIndex] =
+      createStackedBarChart(dim, `#chart_ex_${chartIndex}`, height, mm.config.cEx.barWidth,
+        onFiltered, mm.opt.chartEx[chartIndex].isLegend, mm.opt.chartEx[chartIndex],
+        v => mm.getLabelEx(v, chartIndex),
+        `#panel_ex_${chartIndex}`
+      );
+    mm.chartEx[chartIndex].dataIndex = dataIndex;
+    mm.chartEx[chartIndex]
+      .xAxis().tickFormat(v => mm.getLabelEx(v, chartIndex));
+  }
 }
 const initAllChartEx = (height) => {
   for (let i = D_EX0; i < mm.data_hdr.length; i++) {
@@ -7035,7 +6956,11 @@ const initDc = (data) => {
   const names = _.map(mm.data, D_PL1);
   mm.names = _.uniq(names);
   mm.namesCount = _.countBy(names);
-  mm.citys = _.uniq(_.map(mm.data, D_PL2));
+  if (mm.opt.chartCity.orderYmd) {
+    mm.citys = _.map(mm.data, D_PL2);
+  } else {
+    mm.citys = _.uniq(_.map(mm.data, D_PL2));
+  }
   // mm.conds = _.uniq(_.map(mm.data, D_CND)).map(mm.getLabelCond);
   // mm.ages = _.uniq(_.map(mm.data, D_AGE)).map(mm.getLabelAge);
   mm.jobs = _.uniq(_.map(mm.data, D_JOB));
@@ -7101,6 +7026,7 @@ const initDc = (data) => {
     pnl.map.tabs.is_show = 0;
   }
 
+  // ローカルストレージに設定がない場合,ディフォルト値を設定
   if (settingsLoad() === null) {
     // chart{xxx} 共通
     mm.dataOptionsChartKeys.forEach(keys => {
@@ -7120,6 +7046,9 @@ const initDc = (data) => {
     if (mm.opt.chartMap.isShow === undefined) {
       pnl.map.is_show = gg.dt === DT_COVID;
     }
+
+    // chartDate2
+    pnl.date.chart2.is_show = mm.opt.chartDate2?.isShow ?? false;
   }
   //タイトル変更
   pnl.name.title = mm.data_hdr[D_PL1];
@@ -7629,6 +7558,14 @@ const setBgWindowZIndex = (id) => {
   }
 }
 
+const onFilteredSunburstChart = (i, {chart}) => {
+    // v-modelによりmm.chartEx[i].filtersは自動同期されるため手動設定不要
+    mm.onChartFiltered(chart);
+    mm.onChangeURL(`name${7 + i}`, chart);
+    mm.chartScroll('#div_name');
+    mm.chartScroll('#div_city');
+};
+
 const onDocumentReady = () => {
 
   if (isSp) {
@@ -7857,7 +7794,8 @@ const onDocumentReady = () => {
   mm.datePick.val(mm.data[0][D_YMD].slice(0, 4) + '/01/01')
 
   $('.btn_reset').on('click', function (event) {
-    switch ($(this).attr('id')) {
+    const id = $(this).attr('id');
+    switch (id) {
       case 'btn_reset_name' :
         mm.chartName.filterAll();
         $('#panel_name .filter_txt').text('');
@@ -7916,50 +7854,33 @@ const onDocumentReady = () => {
         dc.redrawAll('chartGroup');
         mm.onChangeURL('clear', 'name6');
         break;
-      case 'btn_reset_ex_0'  :
-        mm.chartEx[0].filterAll();
+      case 'btn_reset_ex_0' :
+      case 'btn_reset_ex_1' :
+      case 'btn_reset_ex_2' :
+      case 'btn_reset_ex_3' :
+      case 'btn_reset_ex_4' :
+      case 'btn_reset_ex_5' :
+      case 'btn_reset_ex_6' :
+      case 'btn_reset_ex_7' :
+      case 'btn_reset_ex_8' :
+      case 'btn_reset_ex_9' :
+      case 'btn_reset_ex_10' :
+      case 'btn_reset_ex_11' :
+      case 'btn_reset_ex_12' :
+      case 'btn_reset_ex_13' :
+      case 'btn_reset_ex_14' :
+      case 'btn_reset_ex_15' :
+        // 接尾辞の数値部分を抽出（btn_reset_ex_XX の XX 部分）
+        const n = parseInt(id.match(/btn_reset_ex_(\d+)/)[1]);
+        mm.chartEx[n].filterAll();
         dc.redrawAll('chartGroup');
-        mm.onChangeURL('clear', 'name7');
-        break;
-      case 'btn_reset_ex_1'  :
-        mm.chartEx[1].filterAll();
-        dc.redrawAll('chartGroup');
-        mm.onChangeURL('clear', 'name8');
-        break;
-      case 'btn_reset_ex_2'  :
-        mm.chartEx[2].filterAll();
-        dc.redrawAll('chartGroup');
-        mm.onChangeURL('clear', 'name9');
-        break;
-      case 'btn_reset_ex_3'  :
-        mm.chartEx[3].filterAll();
-        dc.redrawAll('chartGroup');
-        mm.onChangeURL('clear', 'name10');
-        break;
-      case 'btn_reset_ex_4'  :
-        mm.chartEx[4].filterAll();
-        dc.redrawAll('chartGroup');
-        mm.onChangeURL('clear', 'name11');
-        break;
-      case 'btn_reset_ex_5'  :
-        mm.chartEx[5].filterAll();
-        dc.redrawAll('chartGroup');
-        mm.onChangeURL('clear', 'name12');
-        break;
-      case 'btn_reset_ex_6'  :
-        mm.chartEx[6].filterAll();
-        dc.redrawAll('chartGroup');
-        mm.onChangeURL('clear', 'name13');
-        break;
-      case 'btn_reset_ex_7'  :
-        mm.chartEx[7].filterAll();
-        dc.redrawAll('chartGroup');
-        mm.onChangeURL('clear', 'name14');
+        mm.onChangeURL('clear', `name${n + 7}`);
         break;
     }
   });
 
   $('.btn_close,.btn_winsize').button();
+  if (isSp) $('#toolbar_win_toggle label').button();
 
   if (mm.config.panelDraggable) {
     const $parent = $('#panels');
@@ -8160,7 +8081,7 @@ const onDocumentReady = () => {
     });
     $('.panel_ex').resizable({
       ...options,
-      aspectRatio: true,
+      // aspectRatio: true,
       minWidth: 100,
     });
 
@@ -8273,6 +8194,8 @@ const onDocumentReady = () => {
         .ordering(v ? t => -t.value.total : dc.pluck('key'))
         .elasticX(true)
         .render();
+      // URL parameter update
+      mm.onChangeURL('name3_order', v ? 1 : 0);
     });
   }
 
@@ -8284,8 +8207,21 @@ const onDocumentReady = () => {
         .ordering(v ? t => -t.value.total : dc.pluck('key'))
         .elasticX(true)
         .render();
+
+      // URL parameter update
+      const paramName = `name${k + 7}_order`;
+      mm.onChangeURL(paramName, v ? 1 : 0);
     });
   }
+  watch([() => props.data, () => props.dataPath], async ([newData, newDataPath]) => {
+    //新しいデータファイルでページリロード。
+    if (mm.get.viewMode === 'story') {
+      const url = url_append_param(location.href, {'args': `data:${newData}`});
+      location.href = location.origin + url;
+    } else {
+      location.href = location.pathname + '?data=' + newData;
+    }
+  });
 
   $('#div_date').scrollLeft(1000);
 
@@ -9249,15 +9185,39 @@ h4.hdr {
   font-size: 1.8em !important;
 }
 
-#chart_age .filter {
-  width: 8em;
+.panel_year .filter_txt,
+.panel_season .filter_txt,
+.panel_week .filter_txt,
+.panel_sex .filter_txt,
+.panel_age .filter_txt,
+.panel_cond .filter_txt,
+.panel_job .filter_txt,
+.panel_ex .filter_txt,
+.panel_ex .dsc_filter_txt {
+  flex: 1;
 }
 
-#chart_cond .filter,
-#panel_cond .filter_txt,
-#chart_job .filter,
-#panel_job .filter_txt {
-  max-width: 16em;
+.panel_year .chart-title-wrap,
+.panel_season .chart-title-wrap,
+.panel_week .chart-title-wrap,
+.panel_sex .chart-title-wrap,
+.panel_age .chart-title-wrap,
+.panel_cond .chart-title-wrap,
+.panel_job .chart-title-wrap,
+.panel_ex .chart-title-wrap {
+  display: flex;
+  align-items: center;
+}
+
+.panel_year .chart-title-wrap .btn_close,
+.panel_season .chart-title-wrap .btn_close,
+.panel_week .chart-title-wrap .btn_close,
+.panel_sex .chart-title-wrap .btn_close,
+.panel_age .chart-title-wrap .btn_close,
+.panel_cond .chart-title-wrap .btn_close,
+.panel_job .chart-title-wrap .btn_close,
+.panel_ex .chart-title-wrap .btn_close {
+  margin-left: auto;
 }
 
 .label-x-rot .axis.x .tick text {
@@ -9865,10 +9825,6 @@ path.campaign {
     position: relative;
     width: auto !important;
     height: auto !important;
-  }
-
-  .filter, .filter_txt {
-    max-width: 8em;
   }
 
   .detail-left {
