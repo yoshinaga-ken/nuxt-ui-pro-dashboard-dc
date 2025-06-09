@@ -1,7 +1,7 @@
 {
   "dataType": 0,
   "common": {
-    "unit": "mm"
+    "unit": "℃"
   },
   "chartName": {},
   "chartCity": {
@@ -30,9 +30,9 @@
   "chartSeason": {},
   "chartWeek": {},
   "chartSex": {
-    "name": "平均気温(℃)",
+    "name": "降水量の合計(mm)",
     "chartType": "bar",
-    "scale": 5,
+    "scale": 100,
     "unit": null
   },
   "chartAge": {
@@ -151,7 +151,7 @@
       "0"
     ]
   },
-  "title": "日本の12主要都市の「☔降水量(mm)」の変化 @1986~(40 Years)",
+  "title": "日本の3主要都市の「🌡️平均気温(℃)」の変化 @1872~(153 Years)",
   "searchPrefix": "WeatherData",
   "dataReference": "<ul><li><a target='_blank' href='https://www.data.jma.go.jp/risk/obsdl/'>過去の気象データ・ダウンロード@気象庁</a></li></ul>",
   "editURL": "",

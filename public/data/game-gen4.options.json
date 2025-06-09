@@ -1,7 +1,11 @@
 {
   "dataType": 0,
   "title": "第4世代家庭用ゲーム機ソフト一覧(スーパーファミコン・PCエンジン・メガドライブ＆ファミコン)",
+  "common": {
+    "unit": "タイトル"
+  },
   "searchPrefixDataIndex": 1,
+  "searchPrefix": "ゲーム機",
   "dataReference": "<ul><li><a target='_blank' href=\"http://pasofami.game.coocan.jp/game/game.htm\">各種ゲーム機 カセット・ソフトタイトルリスト@pasofami</a></li><li><a target='_blank' href='https://www.gavas.jp/user_data/superfamicom_game_ranking.php'>各ゲーム機歴代ソフト売上ランキング＠ピコピコ大百科</a></li><li>wikipedia等</li></ul>",
   "detailType": "city",
   "isMakeAutocompleteData": true,
@@ -13,7 +17,9 @@
     "imagePath": "/img/game/smc",
     "imageTooltip": "all",
     "orderYmd": true,
-    "orderUI": true
+    "orderUI": true,
+    "orderUIUnitPrefix": "売上本数",
+    "orderUIUnit": "万本"
   },
   "chartDate": {
     "elasticY": false,
@@ -48,8 +54,41 @@
       "isLegend": false
     },
     {
-      "scale": false,
-      "isLegend": false
+      "name": "👥クリエイターズ👨‍💼👨‍💻🎨",
+      "isDcSunburstChart": true,
+      "dcSunburstChart": {
+        "keyIndex": "👨‍💼$11/👨‍💻$12/🎨$13",
+        "width": 600,
+        "height": 600
+      },
+      "orderDesc": true,
+      "legend": {
+        "isShow": false
+      }
+    },
+    {
+      "name": "👨‍💼ディレクター",
+      "orderDesc": true
+    },
+    {
+      "name": "👨‍💻プログラマー",
+      "orderDesc": true
+    },
+    {
+      "name": "🎨デザイナー/美術",
+      "orderDesc": true
+    },
+    {
+      "name": "🎵音楽",
+      "orderDesc": true
+    },
+    {
+      "name": "📝シナリオ",
+      "orderDesc": true
+    },
+    {
+      "name": "💼プロデューサー",
+      "orderDesc": true
     }
   ],
   "chartDetail": {}

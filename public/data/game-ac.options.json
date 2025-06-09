@@ -1,8 +1,11 @@
 {
   "dataType": 0,
   "title": "「アーケードゲーム」タイトル一覧 1974年～2024年",
-  "searchPrefix": "AC",
-  "searchPrefixDataIndex": 4,
+  "common": {
+    "unit": "タイトル"
+  },
+  "searchPrefixDataIndex": 5,
+  "searchPrefix": "アーケードゲーム",
   "dataReference": "<ul><li><a target='_blank' href=\"https://ja.wikipedia.org/wiki/アーケードゲームのタイトル一覧\">アーケードゲームのタイトル一覧@Wikipedia</a></li></ul>",
   "detailType": "city",
   "isMakeAutocompleteData": true,
@@ -14,7 +17,9 @@
     "imagePath": "/img/game/ac",
     "imageTooltip": "all",
     "orderYmd": true,
-    "orderUI": true
+    "orderUI": true,
+    "orderUIUnitPrefix": "売上本数",
+    "orderUIUnit": "万本"
   },
   "chartDate": {
     "elasticY": false,
@@ -22,10 +27,12 @@
     "format": "YYYY"
   },
   "chartSex": {
-    "unit": null
+    "unit": null,
+    "orderDesc": true
   },
   "chartAge": {
-    "unit": null
+    "unit": null,
+    "orderDesc": true
   },
   "editUrl": "https://docs.google.com/spreadsheets/d/1LDojW4sK_WeHPfnyghVSY3mUSTs55STtofQTRpJlfbQ/edit?gid",
   "chartGMap": {},
@@ -43,12 +50,41 @@
   "chartJobCat": {},
   "chartEx": [
     {
-      "scale": false,
-      "isLegend": false
+      "name": "👥クリエイターズ👨‍💼👨‍💻🎨",
+      "isDcSunburstChart": true,
+      "dcSunburstChart": {
+        "keyIndex": "👨‍💼$10/👨‍💻$11/🎨$12",
+        "width": 600,
+        "height": 600
+      },
+      "orderDesc": true,
+      "legend": {
+        "isShow": false
+      }
     },
     {
-      "scale": false,
-      "isLegend": false
+      "name": "👨‍💼ディレクター",
+      "orderDesc": true
+    },
+    {
+      "name": "👨‍💻プログラマー",
+      "orderDesc": true
+    },
+    {
+      "name": "🎨デザイナー/美術",
+      "orderDesc": true
+    },
+    {
+      "name": "🎵音楽",
+      "orderDesc": true
+    },
+    {
+      "name": "📝シナリオ",
+      "orderDesc": true
+    },
+    {
+      "name": "💼プロデューサー",
+      "orderDesc": true
     }
   ],
   "chartDetail": {}

@@ -1,6 +1,11 @@
 {
   "dataType": 0,
   "title": "「スーパーファミコン」ソフト一覧",
+  "common": {
+    "unit": "タイトル"
+  },
+  "searchPrefixDataIndex": 5,
+  "searchPrefix": "スパーファミコン",
   "dataReference": "<ul><li><a target='_blank' href=\"http://pasofami.game.coocan.jp/game/game.htm\">各種ゲーム機 カセット・ソフトタイトルリスト@pasofami</a></li><li><a target='_blank' href='https://www.gavas.jp/user_data/superfamicom_game_ranking.php'>スーパーファミコン歴代ソフト売上ランキング＠ピコピコ大百科</a></li><li><a target='_blank' <a target='_blank' href='https://ja.wikipedia.org/wiki/%E3%82%B9%E3%83%BC%E3%83%91%E3%83%BC%E3%83%95%E3%82%A1%E3%83%9F%E3%82%B3%E3%83%B3%E3%81%AE%E3%82%B2%E3%83%BC%E3%83%A0%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB%E4%B8%80%E8%A6%A7'>スーパーファミコンのゲームタイトル一覧@Wikipedia</a></li></ul>",
   "detailType": "city",
   "isMakeAutocompleteData": true,
@@ -12,7 +17,9 @@
     "imagePath": "/img/game/smc",
     "imageTooltip": "all",
     "orderYmd": true,
-    "orderUI": true
+    "orderUI": true,
+    "orderUIUnitPrefix": "売上本数",
+    "orderUIUnit": "万本"
   },
   "chartDate": {
     "elasticY": false,
@@ -56,12 +63,46 @@
   "chartJobCat": {},
   "chartEx": [
     {
+      "name": "メモリ(S-RAM)(Kbit)",
       "scale": false,
       "isLegend": false
     },
     {
-      "scale": false,
-      "isLegend": false
+      "name": "👥クリエイターズ👨‍💼👨‍💻🎨",
+      "isDcSunburstChart": true,
+      "dcSunburstChart": {
+        "keyIndex": "👨‍💼$11/👨‍💻$12/🎨$13",
+        "width": 600,
+        "height": 600
+      },
+      "orderDesc": true,
+      "legend": {
+        "isShow": false
+      }
+    },
+    {
+      "name": "👨‍💼ディレクター",
+      "orderDesc": true
+    },
+    {
+      "name": "👨‍💻プログラマー",
+      "orderDesc": true
+    },
+    {
+      "name": "🎨デザイナー/美術",
+      "orderDesc": true
+    },
+    {
+      "name": "🎵音楽",
+      "orderDesc": true
+    },
+    {
+      "name": "📝シナリオ",
+      "orderDesc": true
+    },
+    {
+      "name": "💼プロデューサー",
+      "orderDesc": true
     }
   ],
   "chartDetail": {}

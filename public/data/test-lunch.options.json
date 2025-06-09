@@ -1,6 +1,10 @@
 {
   "dataType": 0,
   "title": "コンビニ お弁当 販売数",
+  "common": {
+    "unit": "個",
+    "unitPrefix": "販売数"
+  },
   "isMakeAutocompleteData": true,
   "chartMap_isShow": "1",
   "chartAge_unit": "null",
@@ -10,7 +14,17 @@
   "chartMap": {},
   "chartName": {},
   "chartCity": {},
-  "chartDate": {},
+  "chartDate": {
+    "isRangeChart": true,
+    "isFilterMissingCorrect": false
+  },
+  "chartDate2": {
+    "isShow": true,
+    "chartType": "lines",
+    "renderArea": true,
+    "renderDataPoints": true,
+    "isFilterMissingCorrect": true
+  },
   "chartYear": {
     "isLegend": true
   },

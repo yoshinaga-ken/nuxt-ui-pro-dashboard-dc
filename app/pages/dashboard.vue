@@ -5,13 +5,22 @@ import DcChart from '~/components/dashboard/DcChart.vue'
 const router = useRouter()
 
 const dataPath = '/data/'
+// heavy data
 const data = 'covid19-data-2021-02-28.csv'
+// const data = 'game-fc.csv'
+
+// light data
 // const data = 'test-lunch.csv'
+// const data = 'test-drink.csv'
+// const data = 'game-fc-10.csv'
+
 const selectableData = {
   'covid19-japan.jpg': 'covid19-data-2021-02-28.csv',
   'food-ramen.jpg': 'food-ramen.csv',
   'ja-weather-precipitation.jpg': 'ja-weather-precipitation.csv',
+  'ja-weather-precipitation-3.jpg': 'ja-weather-precipitation-3.csv',
   'ja-weather-temperature.jpg': 'ja-weather-temperature.csv',
+  'ja-weather-temperature-3.jpg': 'ja-weather-temperature-3.csv',
   'ja-quake-noto-safety.jpg': 'ja-quake-noto-safety.csv',
   'ja-tokyo-gubernatorial-election.jpg': 'ja-tokyo-gubernatorial-election.csv',
   'resas-agriculture.jpg': 'resas-agriculture.csv',
@@ -37,6 +46,7 @@ const selectableData = {
   'test-article-like.jpg': 'test-article-like.csv',
   'test-drink.jpg': 'test-drink.csv',
   'test-lunch.jpg': 'test-lunch.csv',
+  'game-fc-10.jpg': 'game-fc-10.csv',
   'test-agr-kikurage.jpg': 'test-agr-kikurage.csv',
   'sports-hsb.jpg': 'sports-hsb.csv',
   'store-cnt.jpg': 'store-cnt.csv',
