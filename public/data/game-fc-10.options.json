@@ -32,7 +32,10 @@
   },
   "chartYear": {
     "isShow": true,
-    "isLegend": true
+    "isLegend": true,
+    "margins": {
+      "left": 100
+    }
   },
   "chartSeason": {},
   "chartWeek": {},

@@ -26,6 +26,15 @@
     "width": 1000,
     "format": "YYYY"
   },
+  "chartYear": {
+    "isShow": true,
+    "isLegend": true,
+    "margins": {
+      "left": 250
+    }
+  },
+  "chartSeason": {},
+  "chartWeek": {},
   "chartSex": {
     "unit": null,
     "chartType": "bar",
@@ -39,12 +48,6 @@
   "chartSView": {},
   "chartTube": {},
   "chartMap": {},
-  "chartYear": {
-    "isShow": true,
-    "isLegend": true
-  },
-  "chartSeason": {},
-  "chartWeek": {},
   "chartCond": {},
   "chartJob": {},
   "chartJobCat": {},

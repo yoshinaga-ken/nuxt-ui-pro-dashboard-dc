@@ -1785,6 +1785,7 @@ const mm = {
     panelDraggable: !isSp,
     panelDragSnapThreshold: 10,
     panelResizable: !isSp,
+    defaultMargins: {top: 0, right: 0, bottom: 20, left: 40},
     cName: {
       itemHeight: 29,
     },
@@ -1813,7 +1814,7 @@ const mm = {
     cCond: {
       barWidth: 40,
       colors: COL_CND,
-      ordinalColors : isDark ? d3.schemeDark2 : colorbrewer.Pastel1[9]
+      ordinalColors : d3.schemeDark2
     },
     cJob: {
       TD: 750,       //transitionDuration
@@ -2695,8 +2696,8 @@ const mm = {
     },
     stackedTitle: (d, keyFormat = null, unit = '名') => {
       // unit = ' ' + unit;
-      let isBar = isNaN(d.value);
-      let keyStr = keyFormat ? keyFormat(d.key) : d.key;
+      const isBar = isNaN(d.value);
+      const keyStr = keyFormat ? keyFormat(d.key) : d.key;
 
       if (!isBar) {
         //N日 移動平均
@@ -5159,8 +5160,7 @@ const createStackedBarChart = (dimension, parent, height, barWidth, onFiltered, 
   const groupAll = group.all();
 
   // 幅調整
-  const defaultMargins = {top: 0, right: 0, bottom: 20, left: 40};
-  const margins = _.merge({}, defaultMargins, chartOptions?.margins || {});
+  const margins = _.merge({}, mm.config.defaultMargins, chartOptions?.margins || {});
 
   const n = groupAll.length;
   const barW = n > 16 ? parseInt(0.75 * barWidth) : barWidth;
@@ -5206,7 +5206,7 @@ const createStackedBarChart = (dimension, parent, height, barWidth, onFiltered, 
   mm.chart.setStacks(chart, group);
 
   if (isLegend) {
-    const legend = mm.chart.createGridLegend(margins.left === defaultMargins.left ? 45 : 0);
+    const legend = mm.chart.createGridLegend(margins.left === mm.config.defaultMargins.left ? 45 : 0);
     chart.legend(legend)
     chart.legendToggle = mm.chart.filterByStackName;
   }
@@ -5309,7 +5309,7 @@ const initChartName = () => {
         'div_name'
       );
     })
-    .ordinalColors(isDark ? d3.schemePaired : colorbrewer.Set2[8])
+    .ordinalColors(d3.schemePaired)
     //.gap(10) //default:5
     .renderLabel(true) //LeftLabel & tooltip
     .label(function (d) {
@@ -5657,22 +5657,14 @@ const initChartDate = (chartDateW) => {
   //===========================================================================
   // CHART composite_init
   //===========================================================================
-  const legend = mm.chart.createGridLegend(chartDateW);
+  const margins = _.merge({}, mm.config.defaultMargins, mm.opt.chartDate?.margins || {});
+  const legend = mm.chart.createGridLegend(margins.left === mm.config.defaultMargins.left ? 45 : 0);
   const valueFormat = (f) => moment(f).format('YYYY/M/D(ddd)');
   mm.composite
     .width(chartDateW)
     .height(200)
     .useViewBoxResizing(mm.config.panelResizable)
-    //左
-    // .margins({top: 0, right: 0, bottom: 20, left: 30})
-    // .legend(dc.legend().x(40).y(0))
-    //右
-    .margins({
-      top: 0,
-      right: 0,
-      bottom: 20,
-      left: 35
-    })
+    .margins(margins)
     .legend(legend)
     .x(mm.domainDate ? d3.scaleTime().domain(mm.domainDate) : d3.scaleTime())
     .elasticX(false)
@@ -6083,7 +6075,7 @@ const initChartDate2Stacks = (chartDateW, stackOn) => {
   mm.chart.stackOn(mm.chartDate2, stackOn);
 
   // スタック登録 - CHART_DATE_STACK_GRP[0]
-  for (var no = 0; no < mm.chartStack[STACK_CND].length; no++) {
+  for (let no = 0; no < mm.chartStack[STACK_CND].length; no++) {
     if (no === 0) {
       mm.chartDate2.group(gpDateStk, mm.chartStack[STACK_CND][no], mm.dateStackCndAccessor(no, mm.opt.chartDate2.isFilterMissingCorrect));
     } else {
@@ -6093,37 +6085,27 @@ const initChartDate2Stacks = (chartDateW, stackOn) => {
   }
 
   // スタック登録 - CHART_DATE_STACK_GRP[STACK_PL1]
-  for (var no = 0; no < mm.chartStack[STACK_PL1].length; no++) {
+  for (let no = 0; no < mm.chartStack[STACK_PL1].length; no++) {
     // mm.dateStackPl1Names[no] = '(選択' + (no + 1) + ')';
     mm.chartDate2.stack(gpDateStk, mm.chartStack[STACK_PL1][no], mm.dateStackPl1Accessor(no, mm.opt.chartDate2.isFilterMissingCorrect));
   }
 
   // スタック登録 - CHART_DATE_STACK_GRP[STACK_AGE]
-  for (var no = 0; no < mm.chartStack[STACK_AGE].length; no++) {
+  for (let no = 0; no < mm.chartStack[STACK_AGE].length; no++) {
     mm.chartDate2.stack(gpDateStk, mm.chartStack[STACK_AGE][no], mm.dateStackAgeAccessor(no, mm.opt.chartDate2.isFilterMissingCorrect));
   }
 
   mm.chartDate2.ordinalColors(mm.config.cDate.colors);
 
+  const margins = _.merge({}, mm.config.defaultMargins, mm.opt.chartDate?.margins || {});
+  const legend = mm.chart.createGridLegend(margins.left === mm.config.defaultMargins.left ? 45 : 0);
   const valueFormat = (f) => moment(f).format('YYYY/M/D(ddd)');
   mm.composite2
     .width(chartDateW)
     .height(200)
     .useViewBoxResizing(mm.config.panelResizable)
-    //左
-    // .margins({top: 0, right: 0, bottom: 20, left: 30})
-    // .legend(dc.legend().x(40).y(0))
-    //右
-    .margins({
-      top: 0,
-      right: 0,
-      bottom: 20,
-      left: 35
-    })
-    .legend(dc.legend().x(isSp ? chartDateW - 200 : 45).y(10).legendText((d) => {
-      let sel_no = d.name.split(':');
-      return sel_no.length === 2 ? mm.dateStackPl1Names[sel_no[1]] : d.name;
-    }))
+    .margins(margins)
+    .legend(legend)
     .x(mm.domainDate ? d3.scaleTime().domain(mm.domainDate) : d3.scaleTime())
     .elasticX(false)
     //.round(d3.timeDay.round)
@@ -6172,10 +6154,15 @@ const initChartDate2TypeSeries = (chartDateW) => {
     return mm.group_reduce.baseZero(d);
   });
 
+  const margins = _.merge({}, mm.config.defaultMargins, mm.opt.chartDate?.margins || {});
+  const legend = mm.chart.createGridLegend(margins.left === mm.config.defaultMargins.left ? 45 : 0);
+
   mm.composite2
     .width(chartDateW)
     .height(200)
     .useViewBoxResizing(mm.config.panelResizable)
+    .margins(margins)
+    .legend(legend)
     .chart(function (c) {
       return new dc.LineChart(c)
         // .curve(d3.curveLinear)
@@ -6187,12 +6174,6 @@ const initChartDate2TypeSeries = (chartDateW) => {
         // .elasticX(false)
         // .elasticY(true)
         ;
-    })
-    .margins({
-      top: 0,
-      right: 0,
-      bottom: 20,
-      left: 35
     })
     .x(mm.domainDate ? d3.scaleTime().domain(mm.domainDate) : d3.scaleTime())
     .brushOn(false)
@@ -6233,7 +6214,6 @@ const initChartDate2TypeSeries = (chartDateW) => {
     })
     .renderHorizontalGridLines(true)
     .renderVerticalGridLines(true)
-    .legend(dc.legend().x(45).y(0)) //.itemHeight(13).gap(5).horizontal(1).legendWidth(140).itemWidth(70));
     .ordinalColors(mm.config.cDate.colors);
 
   const nTick = gg.dt === DT_COVID ? 7 : (gpDate.all().length < 3 ? 2 : 14);
