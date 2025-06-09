@@ -3,9 +3,12 @@ import { useKeyModifier } from '@vueuse/core';
 import * as dc from 'dc';
 
 /**
- * DC.js チャートの基本機能を提供する Composable
- * @param {Object} options - 設定オプション
- * @returns {Object} - チャートの操作に必要なメソッドと状態
+ * Provides foundational features for DC.js charts in Vue components, including mouse event handling, filter management, and margin application.
+ *
+ * Supports detection of long mouse clicks and modifier keys (Control, Shift) to enable single or multi-selection filter behavior. Computes and applies chart margins, and offers utilities for Sunburst chart centering. Manages event listeners for mouse and touch interactions, and exposes methods to configure DC.js chart instances with custom filter handlers and margin settings.
+ *
+ * @param options - Configuration options for the chart, including the container element ID, optional long-click duration, and margin settings.
+ * @returns An object exposing reactive states, filter handler, event setup/cleanup functions, margin utilities, and chart configuration methods for use in DC.js chart components.
  */
 export function useDcBaseChart(options: {
   chartId: string;
