@@ -2214,7 +2214,7 @@ const mm = {
       gg.dt = DT_DEF;
     }
   },
-  // データオプション(mm.opt)系をpnlに反映
+  // 呼順1:データオプション(mm.opt)系をpnlに反映
   setPanelFromDataOptions: () => {
     if (mm.opt.dataType === DT_COVID) {
       pnl.common.unit = '名';
@@ -2309,7 +2309,37 @@ const mm = {
       mm.opt.chartCity.orderYmd = false;
     }
   },
-  // データオプション(mm.opt)系をpnlに反映 - データロード後
+  // 呼順2:データオプション(mm.opt)系をpnlに反映 - localStorage に設定ない場合のディフォルト値を設定
+  setPanelFromDataOptionsAfterLocalStorageNone: () => {
+    // chart{xxx} 共通
+    mm.dataOptionsChartKeys.forEach(keys => {
+      const key = keys[0];
+      const panelKey = keys[1];
+      if (mm.opt[key].isShow !== undefined) {
+        if (pnl[panelKey] !== undefined) {
+          pnl[panelKey].is_show = mm.opt[key].isShow;
+        }
+      }
+    });
+
+    // chartGMap
+    if (gg.dt === DT_COVID) pnl.gmap.is_show = false;
+
+    // chartMap
+    if (mm.opt.chartMap.isShow === undefined) {
+      pnl.map.is_show = gg.dt === DT_COVID;
+    }
+
+    // chartDate2
+    pnl.date.chart2.is_show = mm.opt.chartDate2?.isShow ?? false;
+
+    // chartEx
+    pnl.ex.forEach((panel, index) => {
+      if (panel.isHidden) return;
+      panel.is_show = mm.opt.chartEx[index]?.isShow ? true : false;
+    });
+  },
+  // 呼順3:データオプション(mm.opt)系をpnlに反映 - データロード後
   setPanelFromDataOptionsAfterLoad: () => {
     if(gg.dt === DT_COVID) {
       pnl.ana.href = location.origin + location.pathname + `?data=${mm.url_data.data}`;
@@ -2331,7 +2361,7 @@ const mm = {
 
   // サンバーストチャートのスタイル設定
   setPanelSunburstChartStyle: (panel, index) => {
-    // サイズは、localStrageの設定がなければ、Jsonオプションの設定を利用
+    // サイズは、localStorage の設定がなければ、Jsonオプションの設定を利用
     if (panel.style !== '') return;
 
     const chartConfig = mm.opt.chartEx[index]?.dcSunburstChart;
@@ -6847,11 +6877,6 @@ const initChartJob = (chartSexW, chartSexH) => {
  * CHART chartEx 拡張チャート barChart|pieChart
  */
 const initChartEx = (chartIndex, dataIndex, title, height) => {
-  // オプションが未定義の場合は初期化
-  if (mm.opt.chartEx[chartIndex] === undefined) {
-    mm.opt.chartEx[chartIndex] = {};
-  }
-
   // パネル設定を更新
   pnl.ex[chartIndex] = pnl.ex[chartIndex] || {};
   pnl.ex[chartIndex].chartType = mm.opt.chartEx[chartIndex].chartType;
@@ -6895,12 +6920,16 @@ const initChartEx = (chartIndex, dataIndex, title, height) => {
 const initAllChartEx = (height) => {
   for (let i = D_EX0; i < mm.data_hdr.length; i++) {
     let ii = i - D_EX0;
+    if(mm.opt.chartEx[ii]===undefined) {
+      // オプションが未定義の場合は初期化
+      mm.opt.chartEx[ii] = {
+        isHidden: true
+      };
+      continue
+    }
+    if(mm.opt.chartEx[ii]?.isHidden)
+      continue
     initChartEx(ii, i, mm.data_hdr[i], height);
-  }
-  // 存在しない配列要素は削除
-  for (let k = 0; k < pnl.ex.length; k++) {
-    if (!pnl.ex[k].isHidden) continue;
-    delete mm.opt.chartEx[k];
   }
 }
 const initDc = (data) => {
@@ -7006,29 +7035,9 @@ const initDc = (data) => {
     pnl.map.tabs.is_show = 0;
   }
 
-  // ローカルストレージに設定がない場合,ディフォルト値を設定
+  // ローカルストレージに設定がない場合のディフォルト値を設定
   if (settingsLoad() === null) {
-    // chart{xxx} 共通
-    mm.dataOptionsChartKeys.forEach(keys => {
-      const key = keys[0];
-      const panelKey = keys[1];
-      if (mm.opt[key].isShow !== undefined) {
-        if (pnl[panelKey] !== undefined) {
-          pnl[panelKey].is_show = mm.opt[key].isShow;
-        }
-      }
-    });
-
-    // chartGMap
-    if (gg.dt === DT_COVID) pnl.gmap.is_show = false;
-
-    // chartMap
-    if (mm.opt.chartMap.isShow === undefined) {
-      pnl.map.is_show = gg.dt === DT_COVID;
-    }
-
-    // chartDate2
-    pnl.date.chart2.is_show = mm.opt.chartDate2?.isShow ?? false;
+    mm.setPanelFromDataOptionsAfterLocalStorageNone();
   }
   //タイトル変更
   pnl.name.title = mm.data_hdr[D_PL1];

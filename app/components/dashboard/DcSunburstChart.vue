@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import * as dc from 'dc';
 import * as d3 from 'd3';
-import { onMounted, ref, watch, defineProps, defineExpose, defineEmits, defineModel, onUnmounted, computed } from "vue";
+import { onMounted, ref, watch, defineProps, defineExpose, defineEmits, defineModel, onUnmounted, nextTick } from "vue";
 import { useDcBaseChart } from '../../composables/dashboard/useDcBaseChart';
 
 // v-model for filters
@@ -329,7 +329,7 @@ const initChart = () => {
     // フィルタの設定
     if (filters.value.length > 0) {
       isProgrammaticUpdate = true;
-      setTimeout(() => {
+      nextTick(() => {
         if (!chart) return;
         chart.filterAll();
         filters.value.forEach(path => {
@@ -339,10 +339,10 @@ const initChart = () => {
         });
         dc.redrawAll(props.chartGroup);
 
-        setTimeout(() => {
+        nextTick(() => {
           isProgrammaticUpdate = false;
-        }, 50);
-      }, 1);
+        });
+      });
     }
     // チャートの描画
     isResizing = true; // リサイズ中フラグを立てる
@@ -384,7 +384,7 @@ watch(filters, (newFilters, oldFilters) => {
   isProgrammaticUpdate = true;
 
   try {
-    setTimeout(() => {
+    nextTick(() => {
       if (!chart) return;
 
       // 現在のフィルターをクリア
@@ -403,10 +403,10 @@ watch(filters, (newFilters, oldFilters) => {
       dc.redrawAll(props.chartGroup);
 
       // プログラム的な更新フラグを非同期で下げる
-      setTimeout(() => {
+      nextTick(() => {
         isProgrammaticUpdate = false;
-      }, 50);
-    }, 1);
+      });
+    });
   } catch (error) {
     console.error('Error in filters watch:', error);
     isProgrammaticUpdate = false;
