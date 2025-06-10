@@ -29,6 +29,15 @@
   "chartDate2": {
     "chartType": "series_or_stack"
   },
+  "chartYear": {
+    "isShow": true,
+    "isLegend": true,
+    "margins": {
+      "left": 100
+    }
+  },
+  "chartSeason": {},
+  "chartWeek": {},
   "chartSex": {
     "chartType": "bar",
     "unit": null
@@ -52,23 +61,16 @@
   "chartSView": {},
   "chartTube": {},
   "chartMap": {},
-  "chartYear": {
-    "isShow": true,
-    "isLegend": true,
-    "margins": {
-      "left": 100
-    }
-  },
-  "chartSeason": {},
-  "chartWeek": {},
   "chartCond": {},
   "chartJob": {},
   "chartJobCat": {},
   "chartEx": [
     {
       "name": "ハード",
+      "isHidden": 0,
+      "isShow": 1,
+      "isLegend": 0,
       "scale": false,
-      "isLegend": false,
       "unit": [
         "不明",
         "ファミコン",
@@ -77,59 +79,93 @@
     },
     {
       "name": "👥クリエイターズ👨‍💼👨‍💻🎨",
-      "isDcSunburstChart": true,
+      "isHidden": 0,
+      "isShow": 1,
+      "isLegend": 0,
+      "orderDesc": 1,
+      "isDcSunburstChart": 1,
       "dcSunburstChart": {
         "keyIndex": "👨‍💼$11/👨‍💻$12/🎨$13",
         "width": 600,
         "height": 600
       },
-      "orderDesc": true,
       "legend": {
         "isShow": false
       }
     },
     {
       "name": "👨‍💼ディレクター",
+      "isHidden": 0,
+      "isShow": 0,
+      "isLegend": 0,
       "orderDesc": true
     },
     {
       "name": "👨‍💻プログラマー",
+      "isHidden": 0,
+      "isShow": 0,
+      "isLegend": 0,
       "orderDesc": true
     },
     {
       "name": "🎨デザイナー/美術",
+      "isHidden": 0,
+      "isShow": 0,
+      "isLegend": 0,
       "orderDesc": true
     },
     {
       "name": "🎵音楽",
+      "isHidden": 0,
+      "isShow": 0,
+      "isLegend": 0,
       "orderDesc": true
     },
     {
       "name": "📝シナリオ",
+      "isHidden": 0,
+      "isShow": 0,
+      "isLegend": 0,
       "orderDesc": true
     },
     {
       "name": "💼プロデューサー",
+      "isHidden": 0,
+      "isShow": 0,
+      "isLegend": 0,
       "orderDesc": true
     },
     {
       "name": "カセットカラー",
-      "scale": false,
-      "isLegend": false
+      "isHidden": 0,
+      "isShow": 0,
+      "isLegend": 0,
+      "scale": false
     },
     {
       "name": "ラベル",
+      "isHidden": 0,
+      "isShow": 0,
       "scale": false,
       "isLegend": false
     },
     {
-      "name": "「対戦」といえば？"
+      "name": "「対戦」といえば？",
+      "isHidden": 0,
+      "isShow": 0,
+      "isLegend": 0
     },
     {
-      "name": "「ハイスコア」といえば？"
+      "name": "「ハイスコア」といえば？",
+      "isHidden": 0,
+      "isShow": 0,
+      "isLegend": 0
     },
     {
-      "name": "「クリアできなかった」といえば？"
+      "name": "「クリアできなかった」といえば？",
+      "isHidden": 0,
+      "isShow": 0,
+      "isLegend": 0
     }
   ],
   "chartDetail": {}

@@ -56,8 +56,11 @@
   "chartJobCat": {},
   "chartEx": [
     {
+      "name": "メモリ",
+      "isHidden": 0,
+      "isShow": 1,
+      "isLegend": 0,
       "scale": false,
-      "isLegend": false,
       "unit": [
         "不明",
         "64K-SRAM",
@@ -68,6 +71,9 @@
     },
     {
       "name": "👥クリエイターズ👨‍💼👨‍💻🎨",
+      "isHidden": 0,
+      "isShow": 1,
+      "isLegend": 0,
       "isDcSunburstChart": true,
       "dcSunburstChart": {
         "keyIndex": "👨‍💼$11/👨‍💻$12/🎨$13",
@@ -81,26 +87,44 @@
     },
     {
       "name": "👨‍💼ディレクター",
+      "isHidden": 0,
+      "isShow": 0,
+      "isLegend": 0,
       "orderDesc": true
     },
     {
       "name": "👨‍💻プログラマー",
+      "isHidden": 0,
+      "isShow": 0,
+      "isLegend": 0,
       "orderDesc": true
     },
     {
       "name": "🎨デザイナー/美術",
+      "isHidden": 0,
+      "isShow": 0,
+      "isLegend": 0,
       "orderDesc": true
     },
     {
       "name": "🎵音楽",
+      "isHidden": 0,
+      "isShow": 0,
+      "isLegend": 0,
       "orderDesc": true
     },
     {
       "name": "📝シナリオ",
+      "isHidden": 0,
+      "isShow": 0,
+      "isLegend": 0,
       "orderDesc": true
     },
     {
       "name": "💼プロデューサー",
+      "isHidden": 0,
+      "isShow": 0,
+      "isLegend": 0,
       "orderDesc": true
     }
   ],
